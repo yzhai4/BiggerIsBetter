@@ -1,0 +1,1 @@
+{"name":"big-is-strong-world-impact-candidate","version":"0.1.0","private":true,"description":"Independent, offline-tested integration candidate. Not an online release.","scripts":{"test":"node --test tests/*.test.cjs","check":"node --check src/world-impact.js && node --check src/host-hooks.js && node --check src/demo.js"},"engines":{"node":">=18"}}

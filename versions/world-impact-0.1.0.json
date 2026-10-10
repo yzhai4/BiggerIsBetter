@@ -1,0 +1,32 @@
+{
+  "id": "world-impact-0.1.0",
+  "recordedOn": "2026-10-10",
+  "source": "conversation attachment big-is-strong-world-impact-0.1.zip",
+  "path": "experiments/world-impact",
+  "status": "experimental-not-integrated-not-deployed",
+  "unitTests": {"passed": 60, "failed": 0, "runtime": "Node.js v22.16.0", "scope": "logic and host contract"},
+  "browserTests": {"passed": 58, "failed": 0, "scope": "local Chromium mobile viewport and touch emulation", "realWeChatDevice": false, "productionSite": false, "bossFight": "simulation callbacks only"},
+  "integrity": {
+    "originalFilesVerified": 9,
+    "comparison": "Git blob hashes fetched from GitHub matched the local source archive",
+    "gitBlobs": {
+      "build.py": "680e388e8aa7d0df0c16c76e4e2fd47390e55b9e",
+      "index.html": "b84764d36586f9df96d072236034f40b0aa93fff",
+      "package.json": "c8a2d48fadc0f56ff976e69196307d8a0e51eac7",
+      "src/demo.js": "0f3e0ed0b9fca03d0fd00955e41386b22c089706",
+      "src/host-hooks.js": "3e53ee648a5ffb702ba931684eb5b8b0a46864df",
+      "src/world-impact.js": "df820dbba8a58195f2d61c4b06086159746807ab",
+      "tests/browser-checks.py": "4863a25874d49334518e42fa354a95afe413c953",
+      "tests/host-hooks.test.cjs": "c749811e363512c7b7c0d1580115d2a79e138a37",
+      "tests/world-impact.test.cjs": "580cd1cce129b1900d74ddd0db057b21b1e7c6dd"
+    }
+  },
+  "siteCheck": {
+    "url": "https://big-is-strong.jimmy-vaughanowl.chatgpt.site/",
+    "method": "direct fresh anonymous Chromium visit",
+    "result": "ERR_BLOCKED_BY_ADMINISTRATOR",
+    "authenticated": false,
+    "siteAvailabilityConclusion": "unknown; this is not evidence that the site is private or offline",
+    "siteSourceRecovered": false
+  }
+}

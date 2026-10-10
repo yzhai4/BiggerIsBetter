@@ -1,0 +1,38 @@
+name: Candidate checks
+
+on:
+  push:
+    branches: [main, 'feature/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  world-impact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        working-directory: experiments/world-impact
+        run: npm run check
+      - name: Run 60 logic and host-contract tests
+        working-directory: experiments/world-impact
+        run: npm test
+      - name: Build standalone experimental HTML
+        working-directory: experiments/world-impact
+        run: python3 build.py
+      - name: Preserve candidate build, not a production deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-impact-candidate-${{ github.sha }}
+          path: experiments/world-impact/standalone.html
+          retention-days: 14
+          if-no-files-found: error
