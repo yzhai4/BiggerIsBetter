@@ -1,5 +1,12 @@
 # 变更记录
 
+## 2026-10-10 · 同步 Sites v17 主游戏基线
+
+- 从 Sites 项目同步当前 v17 生产产物到 `main`。
+- 导入 `dist/index.html` 与 16 个 SVG 资源，并保留 `.openai/hosting.json` 项目映射。
+- 明确 v17 是当前可部署基线；world-impact 0.1.0 仍为独立实验，不自动接入主游戏。
+- GitHub 导入提交：`cafbee9a0d39dd005e77ce83e69631c2cdd7fd9f`。
+
 ## 2026-10-10 · 仓库初始化与模块 0.1.0 归档
 
 - 创建项目说明、版本索引与版本管理规则。
