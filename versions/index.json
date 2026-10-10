@@ -15,7 +15,8 @@
       "entry": "dist/index.html",
       "assets": 16,
       "status": "deployed-source-synced",
-      "note": "Current Sites v17 static production source was synchronized to GitHub main. This is separate from world-impact-0.1.0, which remains not integrated."
+      "note": "Current Sites v17 static production source was synchronized to GitHub main across the source import commits; the hosting metadata commit is recorded separately. This is separate from world-impact-0.1.0, which remains not integrated.",
+      "githubSnapshotHead": "f883b298e798ac90276ea959b237f42d25533cd2"
     },
     {
       "id": "sites-v15",
