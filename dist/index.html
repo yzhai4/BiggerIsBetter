@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#090b10" />
+<title>大就是强｜早期Demo</title>
+<style>
+:root{--bg:#090b10;--panel:#121722;--panel2:#1b2230;--line:#2d3748;--text:#f8fafc;--muted:#99a5b5;--gold:#ffd166;--hot:#ff5a36;--cyan:#52d5ff;--green:#75e06f;--danger:#ff5268}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}button{font:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation}.app{width:100%;height:100%;max-width:540px;margin:0 auto;position:relative;background:radial-gradient(circle at 50% -10%,#243449 0,#0d1119 42%,#090b10 100%);overflow:hidden}.screen{position:absolute;inset:0;display:none}.screen.active{display:flex}.start{padding:32px 22px 24px;flex-direction:column;justify-content:space-between}.brand{position:relative;text-align:center;padding-top:16px}.eyebrow{letter-spacing:.25em;color:var(--cyan);font-size:11px;font-weight:800}.brand h1{font-size:58px;line-height:.96;letter-spacing:-.08em;margin:16px 0 10px;color:#fff;text-shadow:4px 4px 0 #562018,0 0 30px #ff5a3633}.brand h1 span{color:var(--hot)}.brand p{color:var(--muted);font-size:14px;margin:0 auto;max-width:280px;line-height:1.7}.mascot{height:112px;position:relative;margin:16px auto 4px;width:180px}.mascot .body{position:absolute;width:62px;height:74px;background:linear-gradient(135deg,#f4b183,#bd5736);border-radius:42% 48% 38% 44%;left:56px;top:32px;transform:rotate(-7deg);box-shadow:18px 4px 0 #7b3028}.mascot .head{position:absolute;width:34px;height:34px;background:#f3b184;border-radius:50%;left:35px;top:18px;box-shadow:14px 2px 0 #bb5336}.mascot .wheel{position:absolute;width:38px;height:38px;border:6px solid #8b96a7;border-radius:50%;top:74px;left:36px;box-shadow:40px 0 0 -6px #8b96a7}.mascot .bolt{position:absolute;right:28px;top:0;color:var(--gold);font-size:24px;transform:rotate(18deg)}.start-bottom{display:flex;flex-direction:column;gap:12px}.primary{width:100%;padding:17px;border-radius:16px;background:linear-gradient(135deg,#ff7047,#d9312f);font-weight:900;font-size:18px;box-shadow:0 10px 24px #ff503833}.secondary{width:100%;padding:13px;border:1px solid var(--line);border-radius:14px;background:#10151e;color:#dbe5f4;font-weight:700}.meta-card{display:flex;justify-content:space-between;gap:8px;padding:12px 14px;border:1px solid #273043;background:#111722;border-radius:14px;color:var(--muted);font-size:12px}.meta-card b{color:#fff;font-size:16px}.upgrade-row{display:flex;gap:8px;margin-top:10px}.upgrade{flex:1;padding:11px 6px;border:1px solid #293448;border-radius:12px;background:#111722;font-size:11px;color:#c5d1df}.upgrade strong{display:block;color:#fff;font-size:13px;margin-bottom:3px}.upgrade:active,.secondary:active,.primary:active,.choice:active,.control:active{transform:scale(.98)}
+#game{background:#070a0e}.game-ui{position:absolute;inset:0;pointer-events:none;z-index:2}.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:13px 12px 0}.stat{background:#111722dd;border:1px solid #2d3748;border-radius:11px;padding:7px 9px;backdrop-filter:blur(8px)}.stat label{display:block;color:#8997aa;font-size:10px}.stat strong{font-size:16px;line-height:1.25}.bar{height:4px;border-radius:8px;background:#293343;margin-top:5px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--hot),var(--gold));width:60%;transition:width .2s}.hint{position:absolute;top:95px;left:14px;color:#d1dae6;background:#101722bb;border:1px solid #2a3445;border-radius:10px;padding:7px 10px;font-size:11px;opacity:0;transition:opacity .3s}.hint.show{opacity:1}.tag{position:absolute;right:13px;top:96px;color:var(--gold);font-size:11px;background:#231f16cc;border:1px solid #5f512d;border-radius:10px;padding:7px 9px}.game-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.controls{position:absolute;z-index:4;bottom:24px;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 18px;pointer-events:auto}.move-pad{display:flex;gap:10px}.control{width:62px;height:52px;border:1px solid #445066;background:#1a2432dd;border-radius:16px;font-size:25px;box-shadow:0 8px 20px #0005}.burst{width:92px;height:58px;border-radius:18px;background:linear-gradient(135deg,#ffb23e,#f0473f);font-size:14px;font-weight:900;color:#24100b;box-shadow:0 8px 20px #ff5d3838;opacity:.45}.burst.ready{opacity:1;animation:pulse 1s infinite}.burst:disabled{filter:grayscale(.7)}@keyframes pulse{50%{box-shadow:0 0 0 8px #ff8b3b22,0 8px 22px #ff5d3866}}
+.overlay{position:absolute;z-index:8;inset:0;display:none;align-items:center;justify-content:center;padding:22px;background:#05070bcc;backdrop-filter:blur(8px)}.overlay.active{display:flex}.modal{width:min(430px,100%);max-height:80vh;overflow:auto;background:linear-gradient(180deg,#192131,#10151e);border:1px solid #354258;border-radius:24px;padding:24px;box-shadow:0 22px 70px #0009;max-height:calc(100% - 8px);overflow-y:auto}.modal h2{margin:0 0 7px;font-size:28px}.modal p{color:#aeb9c8;line-height:1.6;margin:7px 0 15px;font-size:14px}.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.result{background:#111722;border:1px solid #293548;border-radius:12px;padding:10px}.result small{display:block;color:#8190a4;font-size:10px}.result b{display:block;margin-top:4px;font-size:18px;color:var(--gold)}.choice-list{display:grid;gap:10px;margin-top:14px}.choice{padding:14px 15px;text-align:left;background:#111a27;border:1px solid #34445b;border-radius:15px}.choice b{display:block;color:#fff;font-size:15px}.choice span{display:block;color:#93a2b6;font-size:12px;margin-top:4px;line-height:1.4}.choice.hot{border-color:#ff7b4c;background:linear-gradient(135deg,#2d1c1c,#16202c)}.choice.locked{opacity:.58;border-style:dashed;filter:saturate(.55)}.choice.locked b::before{content:"🔒 ";font-size:12px}.route-chain{font-size:12px;line-height:1.6;color:#c6d2e0;border:1px solid #2a384c;background:#111722;border-radius:12px;padding:9px 11px;margin:10px 0 3px}.route-chain b{color:var(--gold)}.boss-title{display:flex;align-items:center;gap:8px;color:var(--hot);font-weight:900}.boss-title::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--hot);box-shadow:0 0 14px var(--hot)}.tiny{font-size:11px;color:#8492a6}.toast{position:absolute;z-index:10;top:16%;left:50%;transform:translateX(-50%) translateY(-8px);padding:10px 15px;background:#101722ee;border:1px solid #46556c;border-radius:999px;color:#fff;font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:540px){.app{box-shadow:0 0 80px #0008}.start{padding-left:30px;padding-right:30px}}
+/* v6 visual feedback: keep the dense HUD quiet, but make every touch feel physical. */
+.control,.burst{transition:transform .08s ease,filter .12s ease,box-shadow .12s ease}
+.control.pressed{transform:translateY(3px) scale(.94);filter:brightness(1.35);box-shadow:0 3px 10px #0008}
+.burst.pressed{transform:translateY(3px) scale(.95);filter:brightness(1.18);box-shadow:0 2px 12px #ffb23e88}
+.tag{transition:color .2s ease,border-color .2s ease,box-shadow .2s ease}
+.game-canvas{touch-action:none}
+.choice{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:11px}
+.choice .choice-visual{display:flex;align-items:center;justify-content:center;gap:2px;min-height:36px;margin-top:0;color:inherit;font-size:inherit;line-height:1.2}
+.choice-visual img{width:36px;height:36px;display:block;filter:drop-shadow(0 3px 4px #0008)}
+.choice-visual img+img{width:25px;height:25px;margin-left:-11px}
+.choice-copy{min-width:0}
+.choice-copy>b{display:block}
+.choice-copy>span{display:block;color:#93a2b6;font-size:12px;margin-top:4px;line-height:1.4}
+.choice-mark{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#302541;border:2px solid #a98bd3;color:#e2d3ff;font-size:21px;box-shadow:0 4px 10px #0006}
+.choice-impact{display:block;color:#d9b86c;font-size:10px;font-style:normal;margin-top:5px;line-height:1.35;opacity:.9}
+.round-tag{position:absolute;top:128px;left:50%;transform:translateX(-50%);max-width:calc(100% - 28px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:5px 9px;border:1px solid #3b4c62;background:#101722c9;border-radius:999px;color:#b8c9dc;font-size:10px;letter-spacing:.02em;box-shadow:0 4px 14px #0004}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<section id="start" class="screen start active">
+  <div class="brand"><div class="eyebrow">ONE TAP · ONE RUN · BIGGER</div><h1>大<span>就是</span>强</h1><p>全球变异后的第七年，不同的人觉醒了不同异能。你从农村老家出发，轮椅上的身体觉醒了“胜利就能变大”的异能，沿着公路一路战斗。</p><div class="mascot"><div class="bolt">✦</div><div class="head"></div><div class="body"></div><div class="wheel"></div></div></div>
+  <div class="start-bottom">
+    <div class="meta-card"><span>局外力量点</span><b id="metaPoints">0</b><span>最高强大指数 <b id="bestScore">0</b></span></div>
+    <div class="upgrade-row"><button class="upgrade" data-upgrade="body"><strong>初始体魄</strong><span>起步更大 · <i id="lvBody">Lv.0</i></span></button><button class="upgrade" data-upgrade="move"><strong>轮椅改装</strong><span>移动更快 · <i id="lvMove">Lv.0</i></span></button><button class="upgrade" data-upgrade="mut"><strong>异化容错</strong><span>少吃副作用 · <i id="lvMut">Lv.0</i></span></button></div>
+    <button id="startBtn" class="primary">开始变大</button><button id="resetBtn" class="secondary">清空局外成长</button>
+  </div>
+</section>
+<section id="game" class="screen"><canvas id="canvas" class="game-canvas"></canvas><div class="game-ui"><div class="hud"><div class="stat"><label>强大指数</label><strong id="score">0</strong></div><div class="stat"><label>体型倍率</label><strong id="size">1.0x</strong></div><div class="stat"><label>体力</label><strong id="hp">100%</strong><div class="bar"><i id="hpBar"></i></div></div><div class="stat"><label>前进距离</label><strong id="distance">0m</strong><div class="bar"><i id="progress"></i></div></div></div><div id="hint" class="hint">▲▼ 调整路线 · 青/金=撞赢 · 橙=撞退 · 红=危险</div><div class="tag" id="mutationTag">人类·弱鸡</div><div class="round-tag" id="roundTag">第1轮 · 故乡乡野</div><div class="controls"><div class="move-pad"><button class="control" id="upBtn">▲</button><button class="control" id="downBtn">▼</button></div><button class="burst" id="burstBtn" disabled>爆发<br><small>蓄力中</small></button></div></div></section>
+<div id="choiceOverlay" class="overlay"><div class="modal"><div class="tiny">成长节点已触发 · 选择你的代价</div><h2 id="choiceTitle">变大之后，变成什么？</h2><p>身体已经越过了安全线。力量没有免费午餐，每次选择都会改变这一局。</p><div class="choice-list" id="choiceList"></div></div></div>
+<div id="bossOverlay" class="overlay"><div class="modal"><div class="boss-title" id="bossTitle">第1轮 · 终点前 · 巨型拦路者</div><h2 id="bossNameText">裂田巨獠</h2><p id="bossCopy">它挡住了向右的路。爆发键亮起时点击，把“强大”变成通行证。</p><div class="result"><small>Boss耐久</small><b id="bossHpText">3 / 3</b></div><button class="primary" id="bossStartBtn">进入爆发阶段</button></div></div>
+<div id="resultOverlay" class="overlay"><div class="modal"><div class="tiny" id="resultKicker">本局结束</div><h2 id="resultTitle">你变得很大。</h2><p id="resultText"></p><div class="result-grid"><div class="result"><small>强大指数</small><b id="resultScore">0</b></div><div class="result"><small>体型倍率</small><b id="resultSize">1.0x</b></div><div class="result"><small>获得点数</small><b id="resultPoints">+0</b></div></div><div class="route-chain" id="routeChain"><b>最终进化鉴定</b><br>尚未形成路线</div><button class="primary" id="againBtn">再来一局</button><button class="secondary" id="homeBtn">回到主菜单</button></div></div>
+<div id="toast" class="toast"></div>
+</div>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const canvas = $('#canvas'), ctx = canvas.getContext('2d');
+  const game = {
+    running:false, paused:false, boss:false, bossActive:false, bossHp:3, bossHpMax:3,
+    round:1, roundGoal:1380, ecology:'故乡乡野', roundNote:'从老家村口、稻田和废弃养殖场杀出去，乡野是主角第一次证明异能的试炼场。', bossName:'初代巨獠', bossSpecies:'初代巨獠', bossTheme:'#ff5268',
+    distance:0, score:0, size:1, hp:100, energy:0, y:.55, vy:0, speed:210,
+    last:0, spawn:0, choiceAt:-999, stage:0, objects:[], particles:[], shake:0,
+    traits:{M:0,A:0,N:0,F:0}, maxHp:100, armor:0, regen:0, energyRate:1, proteinMult:1,
+    costSizeLoss:1, collection:1, moveStep:1, shield:0, costHits:0, core:0,
+    wallBreak:false, bossDamage:1, bossEnergyCarry:0, lastStand:false, capstone:null, capstoneTrail:[], routeHistory:[],
+    // Mutations leave a persistent mark on the route.  This is deliberately
+    // separate from `traits`: traits drive the body and collision numbers,
+    // while worldImprint drives the road, short story beats, and a few
+    // consumable route advantages that carry across rounds.
+    worldImprint:{M:0,A:0,N:0,F:0}, storyFlags:[], lastWorldEvent:'', worldPulse:0,
+    seenSpecies:[], speciesHistory:[], sizeClass:1,
+    time:0, movePulse:0, hitFlash:0, playerLean:0, trail:[], lastCollisionReason:'', lastCollision:null,
+    // 每一轮都重新建立一个可读的体型标尺。变异和数值保留，物理体型
+    // 在进入下一轮时归一化，避免连续成长把主角推出画面。
+    baseSize:1, roundStartSize:1, roundEnemyScale:1, visualSize:1
+  };
+  const saveKey = 'bigIsStrongMetaV1';
+  const defaultMeta = {points:0,best:0,body:0,move:0,mut:0};
+  let meta = loadMeta();
+  const names = {M:'巨臂',A:'甲壳',N:'神经',F:'菌群'};
+  const palettes = {M:'#ff7047',A:'#52d5ff',N:'#ffd166',F:'#b7ef63'};
+  // 全球变异后的陆地食物链：主角从老家乡野出发，沿县城、都市和全球前线一路变大。
+  // 碰撞类型仍是 protein/cost/wall/star，但每轮的物种、场景和 Boss 都换一套，
+  // 让“撞飞/撞碎/碾碎更小的、避开更大的”服务于人物成长；视觉关卡始终围绕陆地上的变异公路展开。
+  const ROUND_BLUEPRINTS=[
+    {ecology:'故乡乡野',scene:'从老家村口、稻田和废弃养殖场杀出去，乡野是主角第一次证明异能的试炼场。',boss:{name:'裂田巨獠',species:'裂田巨獠',theme:'#ff5268'},creatures:[
+      {name:'异化田鼠',role:'prey',type:'protein',mass:.62,radius:16,reward:68,growth:.075,energy:12,behavior:'skitter'},
+      {name:'赤眼野犬',role:'predator',type:'cost',mass:1.18,radius:20,damage:15,reward:42,behavior:'tracker',behaviorStrength:.82},
+      {name:'藤甲野猪',role:'obstacle',type:'wall',mass:1.46,radius:33,damage:22,reward:100,behavior:'charge'},
+      {name:'地脉异核',role:'core',type:'star',mass:.82,radius:12,reward:130,energy:25,behavior:'pulse'}
+    ]},
+    {ecology:'县城断电区',scene:'县城停电后，觉醒者占据变电站、菜市场和长街，主角沿公路突破人类与异兽的双重围堵。',boss:{name:'高压猎王',species:'高压猎王',theme:'#52d5ff'},creatures:[
+      {name:'逃逸家禽',role:'prey',type:'protein',mass:.72,radius:18,reward:82,growth:.09,energy:14,behavior:'flock'},
+      {name:'霓虹猎犬',role:'predator',type:'cost',mass:1.42,radius:23,damage:19,reward:55,behavior:'tracker',behaviorStrength:.92},
+      {name:'翻覆公交兽',role:'obstacle',type:'wall',mass:1.92,radius:38,damage:28,reward:130,behavior:'sway'},
+      {name:'变电异核',role:'core',type:'star',mass:1.02,radius:14,reward:160,energy:28,behavior:'pulse'}
+    ]},
+    {ecology:'高楼封锁线',scene:'高楼之间的封锁线把城市切成猎场，异能者势力争夺食物、核心与撤离路线。',boss:{name:'孢殖母体',species:'孢殖母体',theme:'#b7ef63'},creatures:[
+      {name:'窗台翼兽',role:'prey',type:'protein',mass:.86,radius:20,reward:98,growth:.105,energy:16,behavior:'dive'},
+      {name:'酸血变种人',role:'predator',type:'cost',mass:1.72,radius:25,damage:23,reward:70,behavior:'tracker',behaviorStrength:1.02},
+      {name:'藤墙巨体',role:'obstacle',type:'wall',mass:2.28,radius:42,damage:34,reward:155,behavior:'sway'},
+      {name:'监控异眼',role:'core',type:'star',mass:1.22,radius:16,reward:190,energy:32,behavior:'pulse'}
+    ]},
+    {ecology:'全球异变前线',scene:'全球异变进入前线阶段，军用封锁、巨型觉醒者和灾变核心叠在同一条路上。',boss:{name:'天穹巨人',species:'天穹巨人',theme:'#ffb23e'},creatures:[
+      {name:'装甲幼兽',role:'prey',type:'protein',mass:1.02,radius:22,reward:118,growth:.12,energy:18,behavior:'flock'},
+      {name:'空投猎杀体',role:'predator',type:'cost',mass:2.04,radius:28,damage:27,reward:84,behavior:'dive'},
+      {name:'移动堡垒兽',role:'obstacle',type:'wall',mass:2.72,radius:46,damage:42,reward:185,behavior:'march'},
+      {name:'世界裂核',role:'core',type:'star',mass:1.46,radius:18,reward:220,energy:36,behavior:'pulse'}
+    ]}
+  ];
+  const creatureByName=name=>{for(const blueprint of ROUND_BLUEPRINTS){const found=blueprint.creatures.find(c=>c.name===name);if(found)return found}return null};
+  function roundBlueprint(round){return ROUND_BLUEPRINTS[(round-1)%ROUND_BLUEPRINTS.length]}
+  function roundGoal(round){return 1380+Math.min(5,round-1)*180}
+  function roundDanger(round){return 1+Math.min(1.7,(round-1)*.27)}
+  function setupRound(round){const blueprint=roundBlueprint(round);game.round=round;game.roundGoal=roundGoal(round);game.ecology=blueprint.ecology;game.roundNote=blueprint.scene||'';game.bossName=blueprint.boss.name;game.bossSpecies=blueprint.boss.species;game.bossTheme=blueprint.boss.theme;game.bossHpMax=Math.min(9,3+Math.floor((round-1)*.8));game.bossHp=game.bossHpMax;syncRoundTag()}
+  function normalizeNextRound(completedSize){
+    // Growth is a within-round spectacle.  Mutations, routes and combat
+    // values carry across the Boss, while the body is put back on the same
+    // visual ruler used at the beginning of the run.  The encounter scale is
+    // derived from the size we just reached, so the next ecosystem keeps a
+    // readable proportion instead of making the player look tiny or enormous.
+    const base=clamp(game.baseSize||1,.8,2.2),relativeGrowth=Math.max(1,completedSize/base);
+    game.roundEnemyScale=clamp(1/relativeGrowth,.58,1);
+    game.roundStartSize=base;
+    game.size=base;
+    game.visualSize=base;
+    game.sizeClass=Math.max(1,Math.floor(base));
+  }
+  const art={};['protein','cost','core','wall'].forEach(type=>{const image=new Image();image.src='assets/'+type+'.svg';art[type]=image});
+  // Pre-boss fauna vocabulary.  The encounter generator can attach one of
+  // these ids to an object as `creature` (or `species`) without changing its
+  // collision type.  That keeps the old protein / cost / wall / star rules
+  // intact while making each land route's food chain visibly different.
+  const creatureVisuals={
+    larva:{role:'protein',label:'田埂幼兽',body:'#f8d477',accent:'#fff3bd',shape:'larva'},
+    mutant:{role:'protein',label:'变异团簇',body:'#8ae8ff',accent:'#e7fdff',shape:'mutant'},
+    claw:{role:'protein',label:'幼甲兽',body:'#ff8965',accent:'#ffd0a5',shape:'claw'},
+    serpent:{role:'protein',label:'电蛇幼体',body:'#f4c94e',accent:'#fff0a3',shape:'serpent'},
+    frog:{role:'protein',label:'鼓腹蛙',body:'#95d66a',accent:'#e8ffc0',shape:'frog'},
+    moth:{role:'cost',label:'毒翅蛾',body:'#e75c76',accent:'#ffd2db',shape:'moth'},
+    fang:{role:'cost',label:'裂齿兽',body:'#ec5b5b',accent:'#fff0e4',shape:'fang'},
+    wasp:{role:'cost',label:'电刺蜂',body:'#e3b52c',accent:'#fff5aa',shape:'wasp'},
+    slug:{role:'cost',label:'吸血蛞蝓',body:'#b44c72',accent:'#ffd1e0',shape:'slug'},
+    spore:{role:'core',label:'异化孢囊',body:'#78de9b',accent:'#d7ffad',shape:'spore'},
+    shell:{role:'wall',label:'活壳甲兽',body:'#62778b',accent:'#b8f5ff',shape:'shell'},
+    tendril:{role:'wall',label:'触须柱',body:'#744f96',accent:'#efb7ff',shape:'tendril'},
+    eye:{role:'core',label:'窥视核',body:'#54c9ed',accent:'#e6fcff',shape:'eye'}
+  };
+  const defaultCreatureByType={protein:'larva',cost:'fang',wall:'shell',star:'eye',core:'eye'};
+  // The player is assembled from the same compact SVG language as pickups. Each
+  // layer shares a -64..64 x -72..72 canvas so mutations can be added without
+  // changing collision or the existing Canvas fallback silhouette.
+  const playerArt={};['base','wheelchair','arms','shell','neural','fungal','capstone'].forEach(layer=>{const image=new Image();image.src='assets/player-'+layer+'.svg';playerArt[layer]=image});
+  function playerArtReady(){return Object.values(playerArt).every(image=>image.complete&&image.naturalWidth)}
+  function loadMeta(){try{return {...defaultMeta,...JSON.parse(localStorage.getItem(saveKey)||'{}')}}catch{return {...defaultMeta}}}
+  function persist(){localStorage.setItem(saveKey,JSON.stringify(meta));renderMeta()}
+  function renderMeta(){ $('#metaPoints').textContent=meta.points; $('#bestScore').textContent=meta.best; $('#lvBody').textContent='Lv.'+meta.body; $('#lvMove').textContent='Lv.'+meta.move; $('#lvMut').textContent='Lv.'+meta.mut; }
+  renderMeta();
+  function resize(){const d=Math.min(devicePixelRatio||1,2), r=$('#game').getBoundingClientRect(), w=r.width||innerWidth, h=r.height||innerHeight;canvas.width=Math.max(1,w*d);canvas.height=Math.max(1,h*d);ctx.setTransform(d,0,0,d,0,0)}
+  addEventListener('resize',resize); resize();
+  const rand=(a,b)=>a+Math.random()*(b-a); const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  function showToast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>e.classList.remove('show'),1500)}
+  function setScreen(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));$('#'+id).classList.add('active');if(id==='game')resize()}
+  function addParticle(x,y,color,n=8){for(let i=0;i<n;i++)game.particles.push({x,y,vx:rand(-100,100),vy:rand(-140,40),life:rand(.35,.8),max:.8,color,size:rand(2,5),rot:rand(0,Math.PI*2),spin:rand(-5,5),kind:Math.random()<.22?'spark':'square'})}
+  // Collision feedback is kept separate from encounter rules so the same
+  // result can be used by prey, obstacles, and oversized predators.  The
+  // gameplay layer decides what a tier does; this layer makes the impact
+  // readable in one glance without adding another HUD panel.
+  function collisionTier(size,mass){
+    const ratio=size/Math.max(.08,mass);
+    if(ratio>=2.35)return {key:'crush',label:'碾碎',color:'#fff0b0',shake:.42,flash:.26,pulse:.8,particles:27};
+    if(ratio>=1.55)return {key:'smash',label:'撞碎',color:'#ffd166',shake:.3,flash:.2,pulse:.62,particles:21};
+    if(ratio>=1.04)return {key:'knock',label:'撞飞',color:'#8ee8ff',shake:.16,flash:.12,pulse:.38,particles:14};
+    const deficit=mass/Math.max(.08,size);
+    if(deficit>=1.9)return {key:'fatal',label:'被撞碎',color:'#ff5268',shake:.48,flash:.34,pulse:.05,particles:30};
+    if(deficit>=1.35)return {key:'heavy',label:'被撞飞',color:'#ff7b68',shake:.32,flash:.25,pulse:.08,particles:22};
+    return {key:'rebound',label:'撞退',color:'#ff9b79',shake:.2,flash:.16,pulse:.12,particles:16};
+  }
+  function addImpactBurst(x,y,color,tier='knock'){
+    const count=tier==='crush'||tier==='fatal'?28:tier==='smash'||tier==='heavy'?20:14;
+    addParticle(x,y,color,count);
+    const sparks=tier==='crush'||tier==='fatal'?10:5;
+    for(let i=0;i<sparks;i++)game.particles.push({x,y,vx:rand(-230,230),vy:rand(-220,80),life:rand(.25,.55),max:.55,color,size:rand(4,8),rot:rand(0,Math.PI*2),spin:rand(-9,9),kind:'spark'});
+    if(tier==='crush'||tier==='fatal')game.particles.push({x,y,vx:0,vy:0,life:.42,max:.42,color,size:18,rot:0,spin:0,kind:'ring'});
+  }
+  function collisionLabel(o,tier,detail=''){
+    const name=(o&&o.species)||((o&&o.role)==='obstacle'?'障碍':(o&&o.role)==='predator'?'变异猎手':'变异生物');
+    return (o&&o.legacy?'缩小的':'')+name+' · '+tier.label+(detail?' · '+detail:'');
+  }
+  function emitCollisionFeedback(o,tier,x,y,detail=''){
+    if(!tier)return;
+    game.shake=Math.max(game.shake,tier.shake||0);
+    game.hitFlash=Math.max(game.hitFlash,tier.flash||0);
+    game.movePulse=Math.max(game.movePulse,tier.pulse||0);
+    addImpactBurst(x,y,tier.color||creatureColor(o),tier.key);
+    showToast(collisionLabel(o,tier,detail));
+  }
+  function recordCollisionFailure(o,tier,detail=''){
+    if(!tier)return;
+    const label=collisionLabel(o,tier,detail);
+    game.lastCollisionReason=label+'。';
+    game.lastCollision={species:o&&o.species||'',tier:tier.key,round:game.round,ratio:game.size/Math.max(.08,o&&o.mass||1)};
+  }
+  function resetRoute(){game.traits={M:0,A:0,N:0,F:0};game.maxHp=100;game.armor=Math.min(.45,meta.mut*.08);game.regen=0;game.energyRate=1;game.proteinMult=1;game.costSizeLoss=1;game.collection=1;game.moveStep=1;game.shield=0;game.costHits=0;game.core=0;game.wallBreak=false;game.wallBreakFree=0;game.bossDamage=1;game.bossEnergyCarry=0;game.lastStand=false;game.capstone=null;game.capstoneTrail=[];game.routeHistory=[];game.worldImprint={M:0,A:0,N:0,F:0};game.storyFlags=[];game.lastWorldEvent='';game.worldPulse=0;game.seenSpecies=[];game.speciesHistory=[];game.sizeClass=1;game.time=0;game.movePulse=0;game.hitFlash=0;game.playerLean=0;game.trail=[];game.lastCollisionReason='';game.lastCollision=null;game.baseSize=1;game.roundStartSize=1;game.roundEnemyScale=1;game.visualSize=1}
+  function activeTraits(){return Object.entries(game.traits).filter(([,v])=>v>0).map(([k])=>k)}
+  function routeLabel(){if(game.capstone)return game.capstone;const a=activeTraits();return a.length?a.map(k=>names[k]).join('·'):'人类·弱鸡'}
+  function routeChain(){return game.routeHistory.length?game.routeHistory.join(' → '):'尚未形成路线'}
+  const worldRoutes={
+    M:{label:'裂痕公路',short:'巨臂把路面砸出裂痕，障碍会留下可破的缺口。',color:'#ff7047'},
+    A:{label:'甲壳堤线',short:'硬壳铺成护路，第一次撞上大型障碍会有额外缓冲。',color:'#52d5ff'},
+    N:{label:'神经信标',short:'电流点亮路标，异化核心会被神经脉冲吸引。',color:'#ffd166'},
+    F:{label:'菌毯荒径',short:'菌丝沿路蔓延，留下孢子雾，也让身体持续修复。',color:'#b7ef63'}
+  };
+  function optionRouteLetters(id){return (id||'').replace(/[0-9]/g,'').split('').filter((v,i,a)=>['M','A','N','F'].includes(v)&&a.indexOf(v)===i)}
+  function worldEffectPreview(id){const letters=optionRouteLetters(id);if(!letters.length)return '这条选择不会固定道路烙印。';return letters.map(k=>worldRoutes[k].short).join(' ')}
+  function worldImprintLabel(){const active=Object.keys(worldRoutes).filter(k=>(game.worldImprint&&game.worldImprint[k])>0);return active.length?active.map(k=>worldRoutes[k].label).join(' · '):'尚未留下道路烙印'}
+  function applyWorldEffect(option){
+    const letters=optionRouteLetters(option.id);if(!letters.length){game.lastWorldEvent='不稳定的异化没有固定形状，路面只留下短暂的黑色灼痕。';game.worldPulse=1;return game.lastWorldEvent}
+    letters.forEach(k=>{game.worldImprint[k]=Math.min(3,(game.worldImprint[k]||0)+1)});
+    // Small, readable advantages make the route imprint more than a skin:
+    // each choice grants one consumable interaction tied to its fiction.
+    if(letters.includes('M'))game.wallBreakFree+=1;
+    if(letters.includes('A'))game.shield+=1;
+    if(letters.includes('N'))game.energy=Math.min(100,game.energy+12);
+    if(letters.includes('F'))game.regen+=.12;
+    const lead=letters[letters.length-1],info=worldRoutes[lead];
+    game.lastWorldEvent=info.short;game.storyFlags.push({round:game.round,route:letters.join(''),text:info.short});game.worldPulse=1;
+    return info.short
+  }
+  function addTrait(id,n=1){game.traits[id]=Math.min(3,game.traits[id]+n)}
+  function routeCanMix(){return game.core>=1||game.hp<=60||game.costHits>=2}
+  function baseOptions(){
+    const basic=[
+      {id:'M1',title:'巨臂增生',desc:'体型 +0.35；撞击更强，但移动变慢。',hot:true,apply:()=>{addTrait('M');game.size+=.35;game.speed-=12;game.hp=Math.min(game.maxHp,game.hp+8);game.score+=120}},
+      {id:'A1',title:'甲壳覆盖',desc:'体力上限 +20，获得 18% 护甲，开始长出硬壳。',apply:()=>{addTrait('A');game.maxHp+=20;game.armor+=.18;game.hp=Math.min(game.maxHp,game.hp+20);game.size+=.1;game.score+=90}},
+      {id:'N1',title:'神经超频',desc:'速度 +35，蓄力更快，眼睛开始发光。',apply:()=>{addTrait('N');game.speed+=35;game.energyRate+=.2;game.size+=.08;game.score+=80}},
+      {id:'F1',title:'腐生孢子',desc:'每秒回血，移动变慢，身体开始长出菌丝。',locked:()=>game.core<1&&game.costHits<2&&game.hp>65,lock:'需要收集蓝色异化核心，或先承受两次代价',apply:()=>{addTrait('F');game.regen+=.7;game.speed-=8;game.size+=.12;game.score+=100}}
+    ];
+    return basic;
+  }
+  function fusionOptions(){
+    const out=[];
+    const lock=()=>!routeCanMix();
+    const mix=(id,title,desc,one,two,extra)=>{if(game.traits[one]&&!game.traits[two])out.push({id,title,desc,locked:lock,lock:'需要蓝色异化核心，或体力降至60以下',apply:()=>{addTrait(two);extra()}})};
+    mix('MA','蟹钳嫁接','巨臂与甲壳融合：护甲提高，体型继续膨胀，但速度下降。','M','A',()=>{game.armor+=.12;game.hp=Math.min(game.maxHp,game.hp+12);game.size+=.18;game.speed-=8;game.score+=150});
+    mix('MA','蟹钳嫁接','巨臂与甲壳融合：护甲提高，体型继续膨胀，但速度下降。','A','M',()=>{game.armor+=.12;game.hp=Math.min(game.maxHp,game.hp+12);game.size+=.18;game.speed-=8;game.score+=150});
+    mix('MN','液压机神','肌肉纤维接入机械神经：爆发蓄力更快，可撞碎一堵墙。','M','N',()=>{game.speed+=20;game.energyRate+=.25;game.wallBreak=true;game.score+=150});
+    mix('MN','液压机神','肌肉纤维接入机械神经：爆发蓄力更快，可撞碎一堵墙。','N','M',()=>{game.speed+=20;game.energyRate+=.25;game.wallBreak=true;game.score+=150});
+    mix('AN','电磁蟹王','复眼和电甲同步：护甲与速度同时提升。','A','N',()=>{game.armor+=.1;game.speed+=18;game.energyRate+=.2;game.score+=150});
+    mix('AN','电磁蟹王','复眼和电甲同步：护甲与速度同时提升。','N','A',()=>{game.armor+=.1;game.speed+=18;game.energyRate+=.2;game.score+=150});
+    mix('AF','寄生甲壳','撞到红色代价时不再只是受伤，还会反哺体力。','A','F',()=>{game.armor+=.12;game.costSizeLoss*=.5;game.regen+=.35;game.score+=150});
+    mix('AF','寄生甲壳','撞到红色代价时不再只是受伤，还会反哺体力。','F','A',()=>{game.armor+=.12;game.costSizeLoss*=.5;game.regen+=.35;game.score+=150});
+    mix('FN','菌丝神经','菌丝接管神经：持续回血、移动和蓄力同时增强。','F','N',()=>{game.regen+=.5;game.speed+=20;game.energyRate+=.25;game.score+=150});
+    mix('FN','菌丝神经','菌丝接管神经：持续回血、移动和蓄力同时增强。','N','F',()=>{game.regen+=.5;game.speed+=20;game.energyRate+=.25;game.score+=150});
+    return out;
+  }
+  function stageTwoOptions(){
+    const a=activeTraits(), out=[];
+    if(game.traits.M)out.push({id:'M2',title:'骨骼外翻',desc:'巨臂路线强化：体型 +0.32，撞墙伤害降低12%。',apply:()=>{addTrait('M');game.size+=.32;game.speed-=15;game.armor+=.12;game.score+=130}});
+    if(game.traits.A)out.push({id:'A2',title:'蟹钳化',desc:'甲壳路线强化：首次撞墙免伤，并摧毁障碍。',apply:()=>{addTrait('A');game.size+=.15;game.speed-=8;game.wallBreak=true;game.wallBreakFree=1;game.score+=130}});
+    if(game.traits.N)out.push({id:'N2',title:'雷电神经',desc:'神经路线强化：速度 +40，能量增长大幅提升。',apply:()=>{addTrait('N');game.speed+=40;game.energyRate+=.45;game.collection*=1.25;game.score+=130}});
+    if(game.traits.F)out.push({id:'F2',title:'菌毯增殖',desc:'菌群路线强化：蛋白成长收益提高，持续回血。',apply:()=>{addTrait('F');game.proteinMult*=1.5;game.regen+=.8;game.speed-=12;game.score+=130}});
+    out.push(...fusionOptions());
+    if(out.length<3)out.push({id:'risk',title:'强行膨胀',desc:'不稳定地继续变大：体型 +0.22，但体力上限暂时下降。',apply:()=>{game.size+=.22;game.hp=Math.min(game.hp,85);game.score+=90}});
+    return out.slice(0,3);
+  }
+  function capstoneOptions(){
+    const out=[];
+    if(game.traits.M>=2)out.push({id:'M3',title:'肌肉巨像',desc:'体型 +0.5，Boss 爆发伤害提高，但速度进一步下降。',apply:()=>{game.capstone='肌肉巨像';game.size+=.5;game.speed-=20;game.hp=Math.min(game.maxHp,game.hp+15);game.bossDamage=1.5}});
+    if(game.traits.A>=2)out.push({id:'A3',title:'蟹甲堡垒',desc:'护甲提高到更高水平，体力 +35，红色代价几乎无法击穿你。',apply:()=>{game.capstone='蟹甲堡垒';game.maxHp+=35;game.armor=Math.min(.45,game.armor+.22);game.hp=Math.min(game.maxHp,game.hp+35);game.shield+=1}});
+    if(game.traits.N>=2)out.push({id:'N3',title:'闪电猎食者',desc:'速度 +55，进入 Boss 阶段前获得能量，爆发后返还一部分能量。',apply:()=>{game.capstone='闪电猎食者';game.speed+=55;game.energy=Math.min(100,game.energy+40);game.bossEnergyCarry=35}});
+    if(game.traits.F>=2)out.push({id:'F3',title:'菌群灾变',desc:'持续强力回血，首次濒死会自动恢复，但体型更加失控。',apply:()=>{game.capstone='菌群灾变';game.regen+=1.5;game.size+=.25;game.lastStand=true;game.hp=Math.min(game.maxHp,game.hp+10)}});
+    if(game.traits.M&&game.traits.A)out.push({id:'MA3',title:'攻城蟹神',desc:'巨臂与蟹甲融合，Boss 每次命中视为双倍。',apply:()=>{game.capstone='攻城蟹神';game.size+=.35;game.armor=Math.min(.45,game.armor+.18);game.speed-=18;game.bossDamage=2}});
+    if(game.traits.M&&game.traits.N)out.push({id:'MN3',title:'猎杀机神',desc:'肌肉、神经和机械爆发融合，Boss 命中后保留能量。',apply:()=>{game.capstone='猎杀机神';game.size+=.25;game.speed+=25;game.energyRate+=.4;game.bossEnergyCarry=50}});
+    if(game.traits.A&&game.traits.N)out.push({id:'AN3',title:'电磁蟹王',desc:'电甲和复眼融合，Boss 每次命中视为双倍。',apply:()=>{game.capstone='电磁蟹王';game.armor=Math.min(.45,game.armor+.16);game.speed+=25;game.bossDamage=2}});
+    if(game.traits.A&&game.traits.F)out.push({id:'AF3',title:'寄生菌堡垒',desc:'菌丝钻入甲壳：护甲、回血与代价反哺同时增强。',apply:()=>{game.capstone='寄生菌堡垒';game.maxHp+=20;game.armor=Math.min(.45,game.armor+.16);game.regen+=.8;game.costSizeLoss*=.5;game.hp=Math.min(game.maxHp,game.hp+20)}});
+    if(game.traits.F&&game.traits.N)out.push({id:'FN3',title:'菌丝猎杀者',desc:'菌丝接管神经：高速移动、持续回血，Boss 爆发后保留能量。',apply:()=>{game.capstone='菌丝猎杀者';game.regen+=.8;game.speed+=30;game.energyRate+=.45;game.bossEnergyCarry=35}});
+    if(out.length===0)out.push({id:'unstable',title:'不可名状',desc:'所有路线都没有真正完成，获得一份随机异化。',apply:()=>{game.capstone='不可名状';game.size+=.28;game.regen+=.4;game.speed+=10;game.score+=180}});
+    const risk={id:'risk3',title:'最后一次透支',desc:'体型 +0.35，体力 -20，但强大指数大幅上涨。',apply:()=>{game.capstone='透支异形';game.size+=.35;game.hp=Math.max(1,game.hp-20);game.score+=250}};
+    const fusion=out.filter(o=>['MA3','MN3','AN3','AF3','FN3'].includes(o.id));
+    const pure=out.filter(o=>['M3','A3','N3','F3','unstable'].includes(o.id));
+    const picked=[];if(fusion.length)picked.push(fusion[0]);if(pure.length)picked.push(pure[0]);picked.push(risk);if(picked.length<3)picked.push({id:'wild3',title:'不可名状',desc:'路线开始互相吞噬，获得一份不稳定的终局形态。',apply:()=>{game.capstone='不可名状';game.size+=.28;game.regen+=.4;game.speed+=10;game.score+=180}});
+    return picked.slice(0,3);
+  }
+  function iconMarkup(id){const letters=(id||'').replace(/[0-9]/g,'').split('').filter((v,i,a)=>['M','A','N','F'].includes(v)&&a.indexOf(v)===i);if(!letters.length)return '<span class="choice-visual"><span class="choice-mark">✦</span></span>';return '<span class="choice-visual">'+letters.map(k=>'<img src="assets/route-'+k.toLowerCase()+'.svg" alt="">').join('')+'</span>'}
+  function renderChoice(options){
+    $('#choiceList').innerHTML='';
+    options.forEach(o=>{const locked=typeof o.locked==='function'&&o.locked(),worldText=o.worldText||worldEffectPreview(o.id);const b=document.createElement('button');b.className='choice '+(o.hot?'hot ':'')+(locked?'locked':'');b.disabled=locked;b.innerHTML=iconMarkup(o.id)+'<span class="choice-copy"><b>'+o.title+'</b><span>'+o.desc+(locked?' · '+o.lock:'')+'</span><em class="choice-impact">道路影响：'+worldText+'</em></span>';b.onclick=()=>{if(locked)return;const previousCapstone=game.capstone;o.apply();const worldText=applyWorldEffect(o);game.routeHistory.push((game.round>1?'R'+game.round+' · ':'')+o.title);if(game.capstone&&game.capstone!==previousCapstone)game.capstoneTrail.push({round:game.round,name:game.capstone});game.stage++;game.paused=false;$('#choiceOverlay').classList.remove('active');syncRouteTag();showToast('已选择：'+o.title+' · '+(worldText.split('，')[0]||'道路已改变'));addParticle(canvas.clientWidth*.28,canvas.clientHeight*game.y,routeColor(),16)};$('#choiceList').appendChild(b)});
+  }
+  function routeColor(){const a=activeTraits();return a.length?palettes[a[a.length-1]]:'#ffd166'}
+  function syncRouteTag(){const e=$('#mutationTag'),c=routeColor();e.textContent=routeLabel();e.style.color=c;e.style.borderColor=c+'88';e.style.boxShadow='0 0 16px '+c+'22';syncRoundTag()}
+  function syncRoundTag(){const e=$('#roundTag');if(!e)return;const imprint=worldImprintLabel();e.textContent='第'+game.round+'轮 · '+game.ecology+' · 终点：'+game.bossName+(imprint!=='尚未留下道路烙印'?' · 路印：'+imprint:'');e.style.borderColor=(game.bossTheme||'#3b4c62')+'88'}
+  function syncBossOverlay(){const title=$('#bossTitle'),name=$('#bossNameText'),copy=$('#bossCopy');if(title)title.textContent='第'+game.round+'轮 · '+game.ecology+' · 终点前';if(name)name.textContent=game.bossName;if(copy)copy.textContent=(game.round>1?'上一轮的变异体会缩小成猎物，这一轮的巨兽则按更大的尺度占据道路。':'')+(game.roundNote?' '+game.roundNote:'')+(game.lastWorldEvent?' '+game.lastWorldEvent:'')+' 它挡住了向右的路。爆发键亮起时点击，把“强大”变成通行证。';const hp=$('#bossHpText');if(hp)hp.textContent=game.bossHp+' / '+game.bossHpMax}
+  function choiceDistances(){return [game.roundGoal*.26,game.roundGoal*.52,game.roundGoal*.78]}
+  function triggerChoice(){game.paused=true;game.choiceAt=game.distance;const options=game.stage===0?baseOptions():game.stage===1?stageTwoOptions():capstoneOptions();$('#choiceTitle').textContent=(game.round>1?'第'+game.round+'轮 · ':'')+(game.stage===0?'第一次异化：先选你的底色':game.stage===1?'第二次异化：强化还是融合？':'终局形态：把自己变成什么？');renderChoice(options);$('#choiceOverlay').classList.add('active')}
+  function beginBoss(){game.boss=true;game.paused=false;game.bossActive=true;game.bossHp=game.bossHpMax;syncBossOverlay();$('#bossOverlay').classList.remove('active');$('#burstBtn').disabled=false;$('#burstBtn').classList.add('ready');$('#burstBtn').innerHTML='爆发<br><small>点击命中</small>';showToast(game.bossName+' · Boss阶段')}
+  function hitBoss(){if(!game.bossActive)return;const damage=game.bossDamage;game.bossHp-=damage;game.score+=220*damage;game.energy=game.bossEnergyCarry;addParticle(canvas.clientWidth*.75,canvas.clientHeight*.5,'#ffb23e',25);game.shake=.35;game.hitFlash=.32;game.movePulse=.75;$('#bossHpText').textContent=Math.max(0,Math.ceil(game.bossHp))+' / '+game.bossHpMax;if(game.bossHp<=0){endRun(true);return}showToast('命中！还差 '+Math.ceil(game.bossHp)+' 次')}
+  function move(dir){if(!game.running||game.paused)return;game.y=clamp(game.y+dir*.075*game.moveStep,.52,.82);game.vy=dir*180*game.moveStep;game.movePulse=Math.min(1,game.movePulse+.34);game.playerLean=dir*.18;const px=canvas.clientWidth*.24,py=canvas.clientHeight*game.y;addParticle(px-20,py+rand(-12,12),routeColor(),3)}
+  function startRun(mode='fresh'){
+    const fresh=mode!=='next';
+    if(fresh){resetRoute();game.round=1;setupRound(1);game.distance=0;game.score=0;game.baseSize=clamp(1+meta.body*.12,.8,2.2);game.roundStartSize=game.baseSize;game.roundEnemyScale=1;game.size=game.baseSize;game.visualSize=game.baseSize;game.hp=100;game.energy=0;game.speed=218+meta.move*15}
+    else{const completedRound=game.round,completedSize=game.size;for(const creature of roundBlueprint(completedRound).creatures){if(!game.speciesHistory.some(entry=>entry.name===creature.name&&entry.round===completedRound))game.speciesHistory.push({name:creature.name,round:completedRound});if(!game.seenSpecies.includes(creature.name))game.seenSpecies.push(creature.name)}normalizeNextRound(completedSize);setupRound(game.round+1);game.distance=0;game.stage=0;game.choiceAt=-999;game.boss=false;game.bossActive=false;game.objects=[];game.particles=[];game.shake=0;game.hp=Math.max(game.hp,Math.round(game.maxHp*.68));game.energy=Math.min(100,game.energy+game.bossEnergyCarry);game.speed=Math.max(150,game.speed+8);showToast('保留全部变异 · 体型标尺重置 · 进入第'+game.round+'轮')}
+    game.running=true;game.paused=false;game.boss=false;game.bossActive=false;game.bossHp=game.bossHpMax;game.lastCollisionReason='';game.lastCollision=null;game.y=.55;game.vy=0;game.last=performance.now();game.spawn=0;game.choiceAt=-999;game.stage=0;game.objects=[];game.particles=[];game.shake=0;game.lastStand=game.capstone==='菌群灾变';$('#distance').textContent='R'+game.round+' · 0m';$('#progress').style.width='0%';$('#hint').classList.add('show');setTimeout(()=>$('#hint').classList.remove('show'),3500);syncRouteTag();syncRoundTag();$('#burstBtn').disabled=true;$('#burstBtn').classList.remove('ready');$('#resultOverlay').classList.remove('active');setScreen('game');requestAnimationFrame(loop)
+  }
+  function endRun(won=false,reason=''){
+    game.running=false;game.paused=true;game.bossActive=false;const clearBonus=won?420+game.round*180:0;if(won)game.score+=clearBonus;const gained=Math.max(1,Math.floor(game.score/420)+(won?5+game.round:0));meta.points+=gained;meta.best=Math.max(meta.best,Math.floor(game.score));persist();const next=roundBlueprint(game.round+1);const terminalReason=reason||game.lastCollisionReason||'身体先撑不住了。';$('#resultKicker').textContent=won?'第'+game.round+'轮 · 终点突破':'本轮死亡';$('#resultTitle').textContent=won?(game.capstone||'你已经大到能开路。'):terminalReason;$('#resultText').textContent=won?'变异与路线全部保留；下一轮身体回到起步标尺。新生态按更高危险尺度出现，上一轮生物会按比例缩小成可以被你撞飞、撞碎的猎物。':'死亡会清空这次进化，下一局必须从轮椅和第一轮生态重新开始。';$('#resultScore').textContent=Math.floor(game.score);$('#resultSize').textContent=game.size.toFixed(1)+'x';$('#resultPoints').textContent='+'+gained;$('#routeChain').innerHTML='<b>第'+game.round+'轮进化记录</b><br>'+routeChain()+'<br><span>道路烙印：'+worldImprintLabel()+'</span><br><span>Boss：'+game.bossName+' · 护甲 '+Math.round(game.armor*100)+'% · 回血 '+game.regen.toFixed(1)+'/s · 核心 '+game.core+(won?'</span><br><span>下一轮区域：'+next.ecology+' · '+next.boss.name+'</span>':'</span>');$('#againBtn').textContent=won?'进入第'+(game.round+1)+'轮':'从头再来';$('#resultOverlay').classList.add('active')
+  }
+  function spawn(){
+    const blueprint=roundBlueprint(game.round),danger=roundDanger(game.round);
+    const previous=game.speciesHistory.filter(entry=>entry.round<game.round);
+    const legacy=game.round>1&&previous.length>0&&Math.random()<.24;
+    const historical=legacy?previous[Math.floor(Math.random()*previous.length)]:null;
+    const current=blueprint.creatures;
+    const spec=historical?creatureByName(historical.name):(current[Math.floor(Math.random()*current.length)]||current[0]);
+    const legacyScale=legacy?.52:1,roundScale=clamp(game.roundEnemyScale||1,.58,1),sizeScale=roundScale*legacyScale*(.92+Math.random()*.16),legacyPressure=legacy?Math.max(.45,legacyScale*roundScale):1,pressure=legacy?legacyPressure:danger,mass=spec.mass*pressure;
+    // Radius follows both the authored silhouette and the actual collision
+    // mass.  The floor keeps a dangerous organism visibly larger than the
+    // normalized player even when a previous round had a very large body.
+    const rawRadius=spec.radius*sizeScale*(.9+Math.random()*.18),massRadius=Math.min(112,44*Math.pow(mass/Math.max(.8,game.baseSize||1),.62)),radius=Math.max(rawRadius,Math.max(9,massRadius)),y=rand(.52,.78);
+    const flockMate=spec.behavior==='flock'?game.objects.find(item=>item.organism&&!item.legacy&&item.species===spec.name&&item.x>canvas.clientWidth*.52):null;
+    const flockAnchor=flockMate?clamp(flockMate.flockAnchor+rand(-.035,.035),.52,.8):clamp(y+rand(-.05,.05),.52,.8);
+    const object={type:spec.type,organism:true,species:spec.name,role:spec.role,behavior:spec.behavior||'drift',behaviorStrength:spec.behaviorStrength||.8,round:game.round,legacy,legacyRound:historical?.round||game.round,mass,sizeScale,damage:Math.round((spec.damage||0)*danger*(legacy?.65*roundScale:1)),reward:spec.reward||50,growth:spec.growth||.04,energyReward:spec.energy||0,x:canvas.clientWidth+50,y,r:radius,rot:rand(0,6),pulse:rand(0,6),phase:rand(0,Math.PI*2),sway:rand(1.4,3.2),drift:spec.role==='predator'?rand(.018,.042):rand(.008,.024),flockAnchor,homeY:y,diveDir:Math.random()<.5?-1:1,pulseClock:rand(.6,1.8),pulseFlash:0,behaviorTime:0};
+    game.objects.push(object);
+    if(!game.seenSpecies.includes(spec.name))game.seenSpecies.push(spec.name);
+    if(!legacy&&!game.speciesHistory.some(entry=>entry.name===spec.name&&entry.round===game.round))game.speciesHistory.push({name:spec.name,round:game.round})
+  }
+  // Each organism gets one readable, low-cost behavior. These movements add
+  // identity and telegraphing without changing the size-gated collision rule.
+  function updateOrganismBehavior(o,dt){
+    const behavior=o.behavior||'drift';o.behaviorTime=(o.behaviorTime||0)+dt;
+    if(behavior==='tracker'&&o.x<canvas.clientWidth*.92){
+      const delta=clamp(game.y-o.y,-.07,.07);o.y+=delta*dt*(o.behaviorStrength||.8);
+    }else if(behavior==='flock'){
+      const target=clamp(o.flockAnchor+Math.sin(game.time*2.4+o.phase)*.045,.52,.82);o.y+=(target-o.y)*dt*2.4;
+    }else if(behavior==='dive'){
+      const cycle=((o.behaviorTime+o.phase)%3.2)/3.2;
+      const arc=cycle>.28?Math.sin(Math.min(1,(cycle-.28)/.72)*Math.PI)*.25:0;
+      const target=clamp(o.homeY+arc*o.diveDir,.52,.82);o.y+=(target-o.y)*dt*3.6;o.rot+=dt*(arc?2.2:0);
+    }else if(behavior==='skitter'){
+      const twitch=Math.sin(o.behaviorTime*8+o.phase)*.024;o.y+=twitch*dt*5;
+    }else if(behavior==='charge'){
+      const charge=((o.behaviorTime+o.phase)%3.6)>2.55?1:0;o.y+=Math.sin(o.behaviorTime*5+o.phase)*.012*dt*4;o.x+=charge*dt*34;
+    }else if(behavior==='sway'){
+      const target=clamp(o.homeY+Math.sin(game.time*1.4+o.phase)*.14,.52,.82);o.y+=(target-o.y)*dt*1.6;
+    }else if(behavior==='march'){
+      const target=clamp(o.homeY+Math.sin(game.time*.8+o.phase)*.08,.52,.82);o.y+=(target-o.y)*dt*1.1;o.x-=game.speed*dt*.08;
+    }
+    if(behavior==='pulse'){
+      o.pulseClock-=dt;o.pulseFlash=Math.max(0,(o.pulseFlash||0)-dt);
+      if(o.pulseClock<=0){o.pulseClock=1.45+Math.random()*.9;o.pulseFlash=.55;addParticle(o.x,o.y*canvas.clientHeight,'#52d5ff',6)}
+    }
+  }
+  function collide(o,px,py){const pickup=(o.type==='protein'||o.type==='star')?game.collection:1,neuralAttract=o.role==='core'&&game.traits.N?1+Math.min(.24,game.traits.N*.08):1;return Math.abs(o.x-px)<(o.r+24*game.size*pickup*neuralAttract)&&Math.abs(o.y*canvas.clientHeight-py)<(o.r+26*game.size*pickup*neuralAttract)}
+  function takeDamage(amount){if(game.shield>0){game.shield--;showToast('护甲挡住了这次伤害');return 0}const final=amount*(1-Math.min(.45,game.armor));game.hp-=final;return final}
+  function creatureColor(o){if(o.role==='prey')return '#ffd166';if(o.role==='core')return '#52d5ff';if(o.role==='obstacle')return '#aab6c5';return '#ff5268'}
+  // Collision is deliberately tiered rather than a binary "can eat / cannot eat"
+  // check. The ratio is the protagonist's current body scale against the
+  // organism's mass. A small prey is physically overpowered in different ways;
+  // a larger organism knocks the protagonist back, drains several resources,
+  // and can end the run when the gap is catastrophic.
+  function impactPushback(o,py,severity){
+    // Push away from the larger organism's position. The previous sign sent
+    // a hit from below towards the impact instead of away from it.
+    const oy=o.y*canvas.clientHeight,vertical=oy>=py?-1:1;
+    game.y=clamp(game.y+vertical*.045*severity,.52,.82);
+    game.vy=vertical*165*severity;
+    game.distance=Math.max(0,game.distance-22*severity);
+    game.energy=Math.max(0,game.energy-7*severity);
+    game.playerLean=-.18*Math.min(2,severity);
+    game.shake=Math.max(game.shake,.16+.12*Math.min(2,severity));
+    game.movePulse=Math.max(game.movePulse,.45);
+  }
+  function dominantImpactWord(o,ratio){
+    if(o.role==='obstacle'||o.type==='wall')return ratio<.44?'碾碎':ratio<.6?'撞碎':'撞退';
+    if(o.role==='predator'&&ratio<.56)return o.behavior==='dive'?'撞飞':'撞碎';
+    if(o.role==='core')return '反噬';
+    return ratio<.56?'撞飞':'撞退';
+  }
+  function interactCreature(o,px,py){
+    const ratio=game.size/Math.max(.01,o.mass);
+    const tier=collisionTier(game.size,o.mass);
+    const prefix=o.legacy?'缩小旧生态 · ':'';
+    // Keep the existing mutation rewards usable with organism-based walls.
+    // A charge is spent only when the wall is larger; smaller walls already
+    // resolve through the ordinary撞飞/撞碎/碾碎 tiers below.
+    if(o.type==='wall'&&ratio<1.04&&game.wallBreakFree>0){game.wallBreakFree--;game.score+=o.reward||0;const impactTier={...tier,key:'smash',label:'撞碎',color:'#52d5ff',shake:.22,flash:.16,pulse:.7};emitCollisionFeedback(o,impactTier,o.x,o.y*canvas.clientHeight);return}
+    if(o.type==='wall'&&ratio<1.04&&game.wallBreak&&game.energy>=70){game.energy-=70;game.score+=o.reward||0;const impactTier={...tier,key:'smash',label:'撞碎',color:'#52d5ff',shake:.22,flash:.16,pulse:.7};emitCollisionFeedback(o,impactTier,o.x,o.y*canvas.clientHeight);return}
+    // Core objects still use the same size ladder. Once the protagonist is
+    // larger, collecting a core is an impact with a stronger visual reward;
+    // a core that is too large produces the same knockback rules as fauna.
+    if(o.role==='core'&&ratio>=1.04){
+      const smashed=ratio>=1.55,mode=ratio>=2.35?'碾碎':smashed?'撞碎':'撞飞';
+      game.core++;game.score+=o.reward*(ratio>=2.35?1.42:smashed?1.22:1);game.energy=Math.min(100,game.energy+Math.max(20,o.energyReward)*(ratio>=2.35?1.4:smashed?1.25:1));game.movePulse=Math.max(game.movePulse,.48);const impactTier={...tier,key:ratio>=2.35?'crush':smashed?'smash':'knock',label:mode+'异化核心',color:'#52d5ff'};emitCollisionFeedback(o,impactTier,o.x,o.y*canvas.clientHeight,'核心 '+game.core);return}
+    // The protagonist is only slightly larger: the organism is knocked aside,
+    // but the impact is still readable as a physical collision.
+    if(ratio>=1.04){
+      let mode='撞飞',mult=1,growth=(o.growth||.04)*(o.legacy?.82:1)*game.proteinMult;
+      if(ratio>=2.35){mode='碾碎';mult=1.62;growth*=1.5}
+      else if(ratio>=1.55){mode='撞碎';mult=1.28;growth*=1.18}
+      game.size+=growth;game.sizeClass=Math.max(game.sizeClass,Math.floor(game.size));game.score+=o.reward*mult+game.size*8;game.energy=Math.min(100,game.energy+o.energyReward*game.energyRate*(1+Math.min(.45,(ratio-1.04)*.35)));game.playerLean=.16;const impactTier={...tier,label:mode};emitCollisionFeedback(o,impactTier,o.x,o.y*canvas.clientHeight,'体型 +'+growth.toFixed(2));return
+    }
+    // A near miss costs stamina, size, score and energy and pushes the player
+    // backwards. The three bands make "slightly too large" feel survivable,
+    // while a major size mismatch escalates to a run-ending impact.
+    const deficit=1-ratio;
+    if(ratio>=.78){
+      const severity=1+(deficit/.22)*.45,dmg=takeDamage(Math.max(8,(o.damage||14)*severity));game.costHits++;game.score=Math.max(0,game.score-28*severity);game.size=Math.max(.8,game.size-.022*severity*(o.legacy?.5:1));impactPushback(o,py,severity);if(game.traits.F&&game.traits.A)game.hp=Math.min(game.maxHp,game.hp+5);emitCollisionFeedback(o,{...tier,label:'撞退'},o.x,o.y*canvas.clientHeight,'体力 -'+Math.round(dmg)+' · 能量 -'+Math.round(7*severity));return
+    }
+    const catastrophic=ratio<.52;
+    const severity=1.9+(Math.max(0,.78-ratio)/.26)*1.35;
+    const impactWord=dominantImpactWord(o,ratio);
+    // A catastrophic size mismatch is a genuine run-ending event. A single
+    // shield may soften ordinary hits, but it cannot make a body-sized gap
+    // harmless; the shield is shattered before applying the fatal impact.
+    if(catastrophic&&game.shield>0){game.shield=0;showToast('护甲在'+o.species+'面前碎裂');}
+    const dmg=takeDamage(Math.max(18,(o.damage||26)*(catastrophic?2.4:1.55)));game.costHits++;game.score=Math.max(0,game.score-70*severity);game.size=Math.max(.8,game.size-.065*severity*(o.legacy?.5:1));impactPushback(o,py,severity);
+    const heavyLabel=catastrophic?impactWord:'撞飞';
+    const impactTier={...tier,label:'被'+heavyLabel};
+    emitCollisionFeedback(o,impactTier,o.x,o.y*canvas.clientHeight,catastrophic?'本局提前结束':'体力 -'+Math.round(dmg)+' · 体型下降');
+    if(catastrophic){recordCollisionFailure(o,impactTier,'本局提前结束');endRun(false,'你被'+o.species+impactWord+'。');return}
+  }
+  function update(dt){
+    if(!game.running||game.paused)return;game.time+=dt;game.size=clamp(game.size,.78,2.2);game.visualSize=game.size;game.distance+=game.speed*dt/2.8;game.score+=dt*(12+game.size*4);game.hp=Math.min(game.maxHp,game.hp+game.regen*dt);game.energy=Math.min(100,game.energy+dt*19*game.energyRate);game.spawn-=dt;game.movePulse=Math.max(0,game.movePulse-dt*2.8);game.hitFlash=Math.max(0,game.hitFlash-dt*2.4);game.worldPulse=Math.max(0,game.worldPulse-dt*1.6);game.playerLean*=Math.max(0,1-dt*7);if(game.spawn<=0){spawn();game.spawn=rand(.55,1.05)-Math.min(.24,game.distance/5000)}game.y=clamp(game.y+game.vy*dt/1000,.52,.82);game.vy*=.82;game.shake=Math.max(0,game.shake-dt);
+    if(!game.boss&&game.distance>game.roundGoal){game.paused=true;syncBossOverlay();$('#bossOverlay').classList.add('active');return}
+    const choices=choiceDistances();
+    if(!game.boss&&game.stage<3&&game.distance>choices[game.stage]&&game.choiceAt<game.distance-100){triggerChoice();return}
+    const px=canvas.clientWidth*.24,py=canvas.clientHeight*game.y;
+    for(let i=game.objects.length-1;i>=0;i--){const o=game.objects[i];o.x-=game.speed*dt;o.rot+=dt*1.8;o.pulse+=dt*3;if(o.organism){o.y=clamp(o.y+Math.sin(game.time*o.sway+o.phase)*o.drift*dt,.52,.82);updateOrganismBehavior(o,dt)}if(!collide(o,px,py))continue;game.objects.splice(i,1);
+      if(o.organism){interactCreature(o,px,py);if(!game.running)return}
+      else if(o.type==='protein'){game.size+=.055*game.proteinMult;game.score+=65*game.proteinMult+game.size*8;game.energy=Math.min(100,game.energy+12*game.energyRate);game.movePulse=Math.max(game.movePulse,.28);addParticle(o.x,o.y*canvas.clientHeight,'#ffd166',12)}
+      else if(o.type==='cost'){const dmg=takeDamage(14);game.costHits++;game.score=Math.max(0,game.score-20);game.size=Math.max(.8,game.size-.025*game.costSizeLoss);game.hitFlash=.2;if(game.traits.F&&game.traits.A)game.hp=Math.min(game.maxHp,game.hp+5);addParticle(o.x,o.y*canvas.clientHeight,'#ff5268',11);showToast('代价：体力 -'+Math.round(dmg))}
+      else if(o.type==='wall'){game.hitFlash=.3;game.movePulse=.55;if(game.wallBreakFree>0){game.wallBreakFree--;game.score+=160;showToast('蟹钳挡住并撞碎了障碍');addParticle(o.x,o.y*canvas.clientHeight,'#52d5ff',18)}else if(game.wallBreak&&game.energy>=70){game.energy-=70;game.score+=160;showToast('异化力量撞碎了障碍');addParticle(o.x,o.y*canvas.clientHeight,'#52d5ff',18)}else{const dmg=takeDamage(22);game.shake=.22;addParticle(o.x,o.y*canvas.clientHeight,'#a3afbf',13);if(dmg>0)showToast('撞墙：体力 -'+Math.round(dmg))}}
+      else{game.core++;game.score+=120;game.energy=Math.min(100,game.energy+25);game.movePulse=Math.max(game.movePulse,.38);addParticle(o.x,o.y*canvas.clientHeight,'#52d5ff',14);showToast('获得蓝色异化核心 · '+game.core)}
+    }
+    game.objects=game.objects.filter(o=>o.x>-80);if(game.hp<=0){if(game.lastStand){game.lastStand=false;game.hp=Math.max(45,Math.round(game.maxHp*.45));game.score+=120;showToast('菌群濒死复苏');addParticle(px,py,'#b7ef63',22)}else{endRun(false,'身体在半路崩溃。');return}}
+    if(game.energy>=100){$('#burstBtn').classList.add('ready');$('#burstBtn').innerHTML='爆发<br><small>蓄力完成</small>'}else{$('#burstBtn').classList.remove('ready');$('#burstBtn').innerHTML='爆发<br><small>蓄力 '+Math.floor(game.energy)+'%</small>'}
+    $('#score').textContent=Math.floor(game.score);$('#size').textContent=game.size.toFixed(1)+'x';$('#hp').textContent=Math.max(0,Math.round(game.hp))+'/'+game.maxHp;$('#hpBar').style.width=Math.max(0,Math.min(100,game.hp/game.maxHp*100))+'%';$('#distance').textContent='R'+game.round+' · '+Math.min(game.roundGoal,Math.floor(game.distance))+'m';$('#progress').style.width=Math.min(100,game.distance/game.roundGoal*100)+'%';syncRouteTag();
+  }
+  function creatureId(o){
+    const raw=o.creature||o.species||o.fauna||o.creatureId||o.name||null;
+    const direct=typeof raw==='string'?raw:(raw&&((raw.visual||raw.visualId||raw.id||raw.name)));
+    if(direct&&creatureVisuals[direct])return direct;
+    const text=String(direct||'');
+    // The round blueprint uses readable Chinese species names.  Resolve them
+    // here as a convenience, while still allowing an explicit visual id.
+    if(/蛇/.test(text))return 'serpent';
+    if(/幼兽|鼠群|幼体|田埂|滤毒|楼群|变异团簇/.test(text))return 'larva';
+    if(/蟹|甲兽|螯|肉山|骨墙|废铁|肉垒|触须柱/.test(text))return o.type==='wall'?'shell':'claw';
+    if(/菌|孢|核心|神经球|心脏|异能核|窥视|反应堆|高压/.test(text))return o.type==='star'||o.type==='core'?'eye':'spore';
+    if(/蛙|蝾螈|小兽/.test(text))return 'frog';
+    if(/蜂|刺/.test(text))return 'wasp';
+    if(/蛾/.test(text))return 'moth';
+    if(/蜥|猎|酸液|裂颚|螯兽/.test(text))return 'fang';
+    const role=o.role||(raw&&typeof raw==='object'&&raw.role);
+    if(role==='prey')return 'larva';
+    if(role==='predator')return 'fang';
+    if(role==='obstacle')return 'shell';
+    if(role==='core')return 'eye';
+    return null;
+  }
+  function creatureAgeScale(o){
+    let scale=Number(o.visualScale||o.creatureScale||o.roundScale||1);
+    // Custom visualScale remains available for special encounters.  Legacy
+    // fauna already carries its reduced radius from the encounter generator,
+    // so the visual and collision silhouettes stay aligned.
+    if(o.round!=null&&game.round!=null){const delta=Math.max(0,Number(game.round)-Number(o.round));scale*=Math.max(.58,1-delta*.16)}
+    return clamp(scale,.42,2.4)
+  }
+  function drawCreatureObject(o){
+    const id=creatureId(o),v=creatureVisuals[id];if(!v)return false;
+    const r=o.r,body=v.body,accent=v.accent,shape=v.shape,scale=creatureAgeScale(o),line=Math.max(1.5,r*.1);
+    ctx.save();ctx.scale(scale,scale);ctx.shadowColor=body;ctx.shadowBlur=Math.max(8,r*.8);ctx.lineWidth=line;ctx.lineJoin='round';ctx.lineCap='round';
+    if(v.role==='cost'){ctx.strokeStyle='#ff5268aa';ctx.lineWidth=Math.max(1.5,r*.08);ctx.beginPath();ctx.arc(0,0,r*1.18+Math.sin(game.time*6+o.pulse)*2,0,Math.PI*2);ctx.stroke()}
+    if(v.role==='core'){ctx.strokeStyle='#52d5ffaa';ctx.lineWidth=Math.max(1.5,r*.08);ctx.beginPath();ctx.arc(0,0,r*1.12+Math.sin(game.time*5+o.pulse)*2,0,Math.PI*2);ctx.stroke()}
+    if(o.behavior==='pulse'&&o.pulseFlash>0){const progress=1-o.pulseFlash/.55;ctx.globalAlpha=Math.max(.08,1-progress);ctx.strokeStyle='#a7f1ff';ctx.lineWidth=Math.max(1.5,r*.07);ctx.beginPath();ctx.arc(0,0,r*(1.15+progress*.9),0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1}
+    if(o.behavior==='dive'){ctx.globalAlpha=.22;ctx.strokeStyle='#fff0a3';ctx.lineWidth=Math.max(1.5,r*.06);ctx.beginPath();ctx.moveTo(-r*1.25,-r*.5*o.diveDir);ctx.lineTo(-r*.5,-r*.18*o.diveDir);ctx.stroke();ctx.globalAlpha=1}
+    const stroke=accent||'#fff';
+    if(shape==='larva'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.ellipse(-r*.08,0,r*.72,r*.48,-.18,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.shadowBlur=0;ctx.fillStyle=stroke;ctx.beginPath();ctx.arc(-r*.18,-r*.08,r*.14,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle=stroke;ctx.beginPath();ctx.moveTo(-r*.5,-r*.25);ctx.quadraticCurveTo(-r*.9,-r*.8,-r*1.02,-r*.42);ctx.moveTo(r*.3,-r*.2);ctx.quadraticCurveTo(r*.85,-r*.72,r*.9,-r*.22);ctx.stroke();
+    }else if(shape==='mutant'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.arc(0,0,r*.72,Math.PI,0);ctx.lineTo(r*.72,r*.1);ctx.quadraticCurveTo(r*.35,r*.42,0,r*.1);ctx.quadraticCurveTo(-r*.35,r*.42,-r*.72,r*.1);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.shadowBlur=0;ctx.strokeStyle=stroke;for(let i=-1;i<=1;i++){ctx.beginPath();ctx.moveTo(i*r*.38,r*.08);ctx.quadraticCurveTo(i*r*.52,r*.58,i*r*.25,r*.86);ctx.stroke()}
+    }else if(shape==='claw'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.ellipse(0,0,r*.72,r*.5,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
+      ctx.fillStyle=stroke;ctx.beginPath();ctx.arc(-r*.27,-r*.22,r*.12,0,Math.PI*2);ctx.arc(r*.27,-r*.22,r*.12,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle=body;ctx.lineWidth=Math.max(2,r*.14);for(const side of [-1,1])for(let i=0;i<2;i++){ctx.beginPath();ctx.moveTo(side*r*.45,(i-.5)*r*.22);ctx.lineTo(side*r*(.9+i*.1),(i-.5)*r*.5);ctx.stroke()}
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.arc(-r*.92,-r*.05,r*.28,0,Math.PI*2);ctx.arc(r*.92,-r*.05,r*.28,0,Math.PI*2);ctx.fill();ctx.stroke();
+    }else if(shape==='serpent'){
+      ctx.shadowBlur=0;ctx.strokeStyle=body;ctx.lineWidth=r*.38;ctx.beginPath();ctx.moveTo(-r*.9,r*.2);ctx.bezierCurveTo(-r*.4,-r*.55,r*.25,r*.55,r*.92,-r*.12);ctx.stroke();ctx.strokeStyle=stroke;ctx.lineWidth=line;ctx.stroke();
+      ctx.fillStyle=body;ctx.beginPath();ctx.arc(r*.9,-r*.12,r*.3,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#101722';ctx.beginPath();ctx.arc(r*.98,-r*.2,r*.06,0,Math.PI*2);ctx.fill();
+    }else if(shape==='frog'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.ellipse(0,r*.08,r*.74,r*.56,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
+      ctx.fillStyle=body;ctx.beginPath();ctx.arc(-r*.43,-r*.42,r*.28,0,Math.PI*2);ctx.arc(r*.43,-r*.42,r*.28,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#151922';ctx.beginPath();ctx.arc(-r*.43,-r*.43,r*.08,0,Math.PI*2);ctx.arc(r*.43,-r*.43,r*.08,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.strokeStyle=stroke;ctx.beginPath();ctx.arc(0,r*.12,r*.34,.15,Math.PI-.15);ctx.stroke();
+    }else if(shape==='moth'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.moveTo(-r*.1,0);ctx.quadraticCurveTo(-r*1.05,-r*.85,-r*.8,r*.38);ctx.quadraticCurveTo(-r*.45,r*.55,-r*.1,r*.12);ctx.closePath();ctx.moveTo(r*.1,0);ctx.quadraticCurveTo(r*1.05,-r*.85,r*.8,r*.38);ctx.quadraticCurveTo(r*.45,r*.55,r*.1,r*.12);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.shadowBlur=0;ctx.fillStyle=stroke;ctx.beginPath();ctx.ellipse(0,0,r*.15,r*.62,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+    }else if(shape==='fang'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.ellipse(-r*.08,0,r*.72,r*.42,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
+      ctx.fillStyle=stroke;ctx.beginPath();ctx.moveTo(r*.42,-r*.15);ctx.lineTo(r*.95,-r*.42);ctx.lineTo(r*.76,r*.04);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.fillStyle='#1a1118';ctx.beginPath();ctx.moveTo(r*.38,r*.06);ctx.quadraticCurveTo(r*.76,r*.42,r*.99,r*.08);ctx.quadraticCurveTo(r*.72,-r*.02,r*.38,r*.06);ctx.fill();ctx.stroke();ctx.fillStyle='#fff4e8';for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(r*(.48+i*.14),r*.08);ctx.lineTo(r*(.54+i*.14),r*.25);ctx.lineTo(r*(.6+i*.14),r*.08);ctx.fill()}
+    }else if(shape==='wasp'){
+      ctx.fillStyle='#f3cf43';ctx.strokeStyle=stroke;ctx.beginPath();ctx.ellipse(0,0,r*.34,r*.74,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle='#3a2c1b';ctx.lineWidth=Math.max(2,r*.12);for(const y of [-.3,0,.3]){ctx.beginPath();ctx.moveTo(-r*.28,y*r);ctx.lineTo(r*.28,y*r);ctx.stroke()}
+      ctx.fillStyle='#b8f6ff88';ctx.strokeStyle=stroke;ctx.beginPath();ctx.ellipse(-r*.55,-r*.3,r*.48,r*.22,-.35,0,Math.PI*2);ctx.ellipse(r*.55,-r*.3,r*.48,r*.22,.35,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#f3cf43';ctx.strokeStyle=stroke;ctx.beginPath();ctx.moveTo(0,r*.66);ctx.lineTo(-r*.15,r*1.03);ctx.lineTo(r*.15,r*.66);ctx.closePath();ctx.fill();ctx.stroke();
+    }else if(shape==='slug'){
+      ctx.shadowBlur=0;ctx.strokeStyle=body;ctx.lineWidth=r*.35;ctx.beginPath();ctx.moveTo(-r*.9,r*.15);ctx.bezierCurveTo(-r*.5,-r*.65,r*.35,r*.65,r*.9,-r*.1);ctx.stroke();ctx.strokeStyle=stroke;ctx.lineWidth=line;ctx.stroke();for(let i=-1;i<=1;i++){ctx.beginPath();ctx.arc(i*r*.35,i%2?r*.08:-r*.08,r*.11,0,Math.PI*2);ctx.stroke()}
+    }else if(shape==='spore'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.arc(0,0,r*.48,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;for(const [x,y,s] of [[-.65,-.42,.26],[.58,-.45,.22],[-.65,.45,.2],[.63,.4,.28]]){ctx.fillStyle=body;ctx.beginPath();ctx.arc(x*r,y*r,s*r,0,Math.PI*2);ctx.fill();ctx.stroke()}ctx.fillStyle='#163e3d';ctx.beginPath();ctx.arc(0,0,r*.14,0,Math.PI*2);ctx.fill();
+    }else if(shape==='shell'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.roundRect(-r*.8,-r*.8,r*1.6,r*1.6,r*.2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle=stroke;ctx.lineWidth=Math.max(1.5,r*.08);ctx.beginPath();ctx.arc(-r*.15,r*.1,r*.48,0,Math.PI*1.65);ctx.stroke();ctx.fillStyle='#171d28';ctx.beginPath();ctx.arc(r*.3,-r*.25,r*.12,0,Math.PI*2);ctx.fill();
+    }else if(shape==='tendril'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.moveTo(-r*.62,r*.7);ctx.quadraticCurveTo(-r*.78,0,-r*.5,-r*.4);ctx.quadraticCurveTo(0,-r*.85,r*.5,-r*.4);ctx.quadraticCurveTo(r*.78,0,r*.62,r*.7);ctx.closePath();ctx.fill();ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle=accent;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(i*r*.25,-r*.25);ctx.quadraticCurveTo(i*r*.48,-r*.9,i*r*.3,-r*1.06);ctx.stroke()}
+    }else if(shape==='eye'){
+      ctx.fillStyle=body;ctx.strokeStyle=stroke;ctx.beginPath();ctx.ellipse(0,0,r*.78,r*.5,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;ctx.fillStyle='#111722';ctx.beginPath();ctx.arc(0,0,r*.25,0,Math.PI*2);ctx.fill();ctx.fillStyle=stroke;ctx.beginPath();ctx.arc(-r*.08,-r*.08,r*.07,0,Math.PI*2);ctx.fill();
+    }
+    ctx.restore();return true;
+  }
+  function drawArtObject(o){const image=art[o.type];if(!image||!image.complete||!image.naturalWidth)return false;const size=o.type==='wall'?o.r*2.45:o.r*2.8;ctx.drawImage(image,-size/2,-size/2,size,size);return true}
+  // A creature's silhouette now follows its collision mass, but the outline
+  // and short label make the collision outcome legible even when two species
+  // have different shapes.  The cue uses the exact same ratio bands as the
+  // collision resolver, so the player can read the result before committing
+  // to a lane change.
+  function sizeCue(o){
+    const ratio=game.size/Math.max(.08,o.mass);
+    if(ratio>=2.35)return {label:'碾碎',color:'#fff0b0',dash:[10,3]};
+    if(ratio>=1.55)return {label:'撞碎',color:'#ffd166',dash:[8,4]};
+    if(ratio>=1.04)return {label:'撞飞',color:'#8ee8ff',dash:[7,5]};
+    if(ratio>=.78)return {label:'撞退',color:'#ff9b79',dash:[5,5]};
+    if(ratio>=.52)return {label:'危险',color:'#ff7b68',dash:[3,5]};
+    return {label:'必死',color:'#ff5268',dash:[2,5]};
+  }
+  function drawSizeCue(o){
+    if(!o.organism||o.x<canvas.clientWidth*.04||o.x>canvas.clientWidth*.94)return;
+    const cue=sizeCue(o),scale=creatureAgeScale(o),r=Math.max(12,o.r*scale),y=o.y*canvas.clientHeight;
+    ctx.save();ctx.translate(o.x,y);
+    const ring=r*1.22+3+Math.sin(game.time*4+o.pulse)*1.5;
+    ctx.globalAlpha=.78;ctx.strokeStyle=cue.color;ctx.lineWidth=2;ctx.setLineDash(cue.dash);ctx.beginPath();ctx.arc(0,0,ring,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    ctx.globalAlpha=.94;ctx.font='900 10px system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+    const labelY=-ring-3,width=ctx.measureText(cue.label).width+10;ctx.fillStyle='#0b1119dd';ctx.fillRect(-width/2,labelY-13,width,15);ctx.fillStyle=cue.color;ctx.fillText(cue.label,0,labelY);
+    ctx.restore();
+  }
+  // Grounding pass: every land creature receives a small contact shadow before
+  // its sprite is painted.  Flying/dive creatures get a detached, lighter
+  // shadow so their altitude reads immediately; cores keep a compact glow
+  // instead of looking like they are standing on the road.
+  function drawCreatureShadow(o){
+    if(!o.organism||o.x< -160||o.x>canvas.clientWidth+160)return;
+    const scale=creatureAgeScale(o),r=Math.max(10,o.r*scale),airborne=o.behavior==='dive',
+      obstacle=o.role==='obstacle',core=o.role==='core',cx=o.x-(airborne?r*.16:0),
+      contactY=airborne?o.y*canvas.clientHeight+r*1.28:Math.max(canvas.clientHeight*.62,o.y*canvas.clientHeight+r*.84),
+      rx=r*(airborne?.5:obstacle?1.08:core?.52:.78),ry=Math.max(2.5,r*(airborne?.075:core?.08:.12));
+    ctx.save();ctx.translate(cx,contactY);ctx.scale(1,airborne?.72:1);
+    ctx.globalAlpha=airborne?.18:core?.2:obstacle?.4:.28;ctx.fillStyle='#080b10';ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.fill();
+    if(!airborne&&!core){ctx.globalAlpha=.22;ctx.strokeStyle=obstacle?'#201a18':'#172028';ctx.lineWidth=Math.max(1,r*.035);ctx.beginPath();ctx.ellipse(0,0,rx*1.08,ry*1.32,0,0,Math.PI*2);ctx.stroke()}
+    if(airborne){ctx.globalAlpha=.14;ctx.strokeStyle='#8da4ae';ctx.lineWidth=Math.max(1,r*.025);ctx.setLineDash([Math.max(2,r*.08),Math.max(3,r*.14)]);ctx.beginPath();ctx.moveTo(-rx*.7,-ry*1.8);ctx.lineTo(rx*.7,-ry*1.8);ctx.stroke();ctx.setLineDash([])}
+    ctx.restore();
+  }
+  function drawPlayerShadow(x,y,s){
+    const body=Math.max(.78,s||1),wheelchair=game.stage===0&&activeTraits().length===0,
+      contactY=Math.max(canvas.clientHeight*.62,y+body*(wheelchair?48:51)),rx=body*(wheelchair?39:32),ry=body*(wheelchair?7:6);
+    ctx.save();ctx.translate(x,contactY);ctx.globalAlpha=.36;ctx.fillStyle='#080b10';ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=.24;ctx.strokeStyle='#16232a';ctx.lineWidth=Math.max(1,body*1.5);ctx.beginPath();ctx.ellipse(0,0,rx*1.1,ry*1.55,0,0,Math.PI*2);ctx.stroke();
+    if(wheelchair){ctx.globalAlpha=.5;ctx.fillStyle='#101722';for(const wx of [-26,20]){ctx.beginPath();ctx.ellipse(wx*body,0,body*8,body*2.5,0,0,Math.PI*2);ctx.fill()}}
+    ctx.restore();
+  }
+  function drawBossShadow(w,h){
+    const round=game.round%4,rx=round===0?112:round===2?86:78,ry=round===0?13:10,base=h*.48+(round===0?126:round===2?78:72);
+    ctx.save();ctx.translate(w*.78,base);ctx.globalAlpha=.48;ctx.fillStyle='#080b10';ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=.26;ctx.strokeStyle=game.bossTheme||'#39434a';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,0,rx*1.08,ry*1.55,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+  }
+  // The run starts in the player's Chinese hometown and only widens in scale
+  // as the rounds advance: village fields, county streets, a sealed city and
+  // finally a global disaster front.  These are deliberately Canvas primitives
+  // so the scene remains lightweight and never falls back to an underwater look.
+  function drawLandscape(w,h){
+    const level=Math.max(0,Math.min(3,(game.round||1)-1));
+    const scroll=game.distance||0;
+    const palettes=[
+      ['#8fb8d2','#e9cf9c','#b3c98a','#617b5a'],
+      ['#a7b9c8','#d5a879','#8b8e73','#4d5860'],
+      ['#26384f','#7f6670','#354255','#111a27'],
+      ['#3a1d26','#a84b2f','#4a2827','#17171d']
+    ][level];
+    const sky=ctx.createLinearGradient(0,0,0,h);
+    sky.addColorStop(0,palettes[0]);sky.addColorStop(.55,palettes[1]);sky.addColorStop(1,palettes[2]);
+    ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+    const horizon=level===0?h*.48:level===1?h*.45:level===2?h*.42:h*.46;
+    if(level===0){
+      // Distant Qinling-like ridges, crop plots and an unpaved village road.
+      ctx.fillStyle='#7b967a';ctx.beginPath();ctx.moveTo(0,horizon+.06*h);ctx.lineTo(w*.12,horizon-.08*h);ctx.lineTo(w*.25,horizon+.01*h);ctx.lineTo(w*.4,horizon-.12*h);ctx.lineTo(w*.58,horizon+.03*h);ctx.lineTo(w*.75,horizon-.09*h);ctx.lineTo(w,horizon+.04*h);ctx.lineTo(w,horizon+.2*h);ctx.lineTo(0,horizon+.2*h);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#5c765d';ctx.beginPath();ctx.moveTo(0,horizon+.12*h);ctx.lineTo(w*.22,horizon-.015*h);ctx.lineTo(w*.39,horizon+.1*h);ctx.lineTo(w*.58,horizon-.02*h);ctx.lineTo(w*.82,horizon+.08*h);ctx.lineTo(w,horizon-.025*h);ctx.lineTo(w,horizon+.22*h);ctx.lineTo(0,horizon+.22*h);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#89a45f';ctx.fillRect(0,horizon+.12*h,w,h-horizon);
+      // Ploughed field bands and raised paths (田埂).
+      ctx.strokeStyle='#adbf73';ctx.lineWidth=2;for(let i=0;i<9;i++){const y=horizon+.17*h+i*i*.009*h;ctx.beginPath();ctx.moveTo(0,y);ctx.quadraticCurveTo(w*.47,y-7,w,y+4);ctx.stroke()}
+      ctx.fillStyle='#9d6d43';ctx.beginPath();ctx.moveTo(w*.10,horizon+.12*h);ctx.lineTo(w*.30,horizon+.12*h);ctx.lineTo(w*.78,h);ctx.lineTo(-.45*w,h);ctx.closePath();ctx.fill();
+      ctx.strokeStyle='#c9965b';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(w*.12,horizon+.13*h);ctx.lineTo(-.35*w,h);ctx.moveTo(w*.29,horizon+.13*h);ctx.lineTo(w*.74,h);ctx.stroke();
+      ctx.strokeStyle='#d6a66b';ctx.lineWidth=2;for(let i=0;i<18;i++){const y=horizon+.22*h+((i*37+scroll*.23)%Math.max(1,h*.65));const x=((i*83-scroll*.52)%(w+40))-20;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+18,y+2);ctx.stroke()}
+      // Concrete utility poles and sagging wires make the hometown immediately legible.
+      const poleShift=(scroll*.16)%190;ctx.strokeStyle='#39453f';ctx.lineWidth=4;for(let i=-1;i<5;i++){const x=i*190-poleShift+w*.1,base=horizon+.1*h,top=base-100;ctx.beginPath();ctx.moveTo(x,base);ctx.lineTo(x,top);ctx.stroke();ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x-18,top+8);ctx.lineTo(x+18,top+8);ctx.stroke();ctx.lineWidth=4}
+      ctx.strokeStyle='#26342f';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-20,horizon-.02*h);ctx.bezierCurveTo(w*.22,horizon+.1*h,w*.47,horizon-.09*h,w*.7,horizon+.02*h);ctx.bezierCurveTo(w*.86,horizon+.1*h,w*.98,horizon-.01*h,w+20,horizon+.05*h);ctx.stroke();
+    }else if(level===1){
+      // County edge: low tiled roofs, shop blocks, sidewalks and a marked road.
+      ctx.fillStyle='#667274';ctx.fillRect(0,horizon,w,h*.18);
+      const blockShift=(scroll*.28)%170;for(let i=-1;i<8;i++){const x=i*170-blockShift;const bh=45+(i%3)*15;ctx.fillStyle=i%2?'#b77d63':'#8d9b9d';ctx.fillRect(x,horizon-bh,126,bh);ctx.fillStyle='#674b45';ctx.beginPath();ctx.moveTo(x-8,horizon-bh);ctx.lineTo(x+62,horizon-bh-22);ctx.lineTo(x+136,horizon-bh);ctx.closePath();ctx.fill();ctx.fillStyle='#e5c37b';for(let j=0;j<3;j++)ctx.fillRect(x+18+j*32,horizon-bh+17,13,12)}
+      ctx.fillStyle='#4a5255';ctx.fillRect(0,horizon+.16*h,w,h-horizon-.16*h);ctx.fillStyle='#85867d';ctx.fillRect(0,horizon+.16*h,w,7);
+      ctx.strokeStyle='#d8be70';ctx.lineWidth=4;for(let x=-(scroll*.7%96);x<w;x+=96){ctx.beginPath();ctx.moveTo(x,h*.76);ctx.lineTo(x+48,h*.76);ctx.stroke()}
+      ctx.strokeStyle='#b7b6a3';ctx.lineWidth=2;for(let x=-(scroll*.8%44);x<w;x+=44){ctx.beginPath();ctx.moveTo(x,h*.9);ctx.lineTo(x+24,h*.9);ctx.stroke()}
+      const poleShift=(scroll*.22)%210;ctx.strokeStyle='#4d4a46';ctx.lineWidth=4;for(let i=-1;i<5;i++){const x=i*210-poleShift+w*.18,base=horizon+.16*h,top=base-112;ctx.beginPath();ctx.moveTo(x,base);ctx.lineTo(x,top);ctx.stroke();ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-24,top+10);ctx.lineTo(x+24,top+10);ctx.stroke();ctx.lineWidth=4}
+      ctx.strokeStyle='#363a3b';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-10,horizon-.02*h);ctx.bezierCurveTo(w*.25,horizon+.07*h,w*.52,horizon-.05*h,w*.78,horizon+.04*h);ctx.lineTo(w+10,horizon-.02*h);ctx.stroke();
+    }else if(level===2){
+      // Dense city: towers, lit windows, an elevated roadway and hard lane lines.
+      ctx.fillStyle='#263548';ctx.fillRect(0,horizon,w,h*.2);
+      const towerShift=(scroll*.2)%118;for(let i=-1;i<12;i++){const x=i*118-towerShift;const bw=72+(i%3)*18,bh=110+(i%5)*33;ctx.fillStyle=['#1b2a3c','#31465b','#202a3a'][i%3];ctx.fillRect(x,horizon-bh,bw,bh);ctx.fillStyle=i%2?'#f6c86b':'#87b7c5';for(let yy=horizon-bh+16;yy<horizon-8;yy+=20)for(let xx=x+12;xx<x+bw-8;xx+=18)if(((xx+yy+i*7)/18|0)%3)ctx.fillRect(xx,yy,7,8)}
+      ctx.fillStyle='#111923';ctx.fillRect(0,horizon+.2*h,w,h-horizon-.2*h);ctx.fillStyle='#34465b';ctx.fillRect(0,horizon+.18*h,w,8);
+      ctx.strokeStyle='#e0bd62';ctx.lineWidth=4;for(let x=-(scroll*.9%108);x<w;x+=108){ctx.beginPath();ctx.moveTo(x,h*.76);ctx.lineTo(x+58,h*.76);ctx.stroke()}
+      ctx.strokeStyle='#60758b';ctx.lineWidth=10;ctx.beginPath();ctx.moveTo(-20,horizon+.07*h);ctx.quadraticCurveTo(w*.42,horizon-.04*h,w+20,horizon+.08*h);ctx.stroke();ctx.strokeStyle='#172331';ctx.lineWidth=3;ctx.stroke();
+      for(let x=40-(scroll*.42%140);x<w;x+=140){ctx.fillStyle='#455b70';ctx.fillRect(x,horizon+.06*h,8,h*.34)}
+    }else{
+      // Global disaster front: smoke, burning horizon, broken towers and cracked asphalt.
+      const glow=ctx.createLinearGradient(0,horizon-.2*h,0,h);glow.addColorStop(0,'#7d312d00');glow.addColorStop(.6,'#ff703044');glow.addColorStop(1,'#ef4c2b88');ctx.fillStyle=glow;ctx.fillRect(0,horizon-.2*h,w,h*.4);
+      const ruinShift=(scroll*.14)%150;for(let i=-1;i<9;i++){const x=i*150-ruinShift,bh=70+(i%4)*34;ctx.fillStyle=i%2?'#202129':'#2e2528';ctx.fillRect(x,horizon-bh,92,bh);ctx.fillStyle='#e97848';for(let yy=horizon-bh+18;yy<horizon-8;yy+=24)if((i+yy/24)%3===0)ctx.fillRect(x+18+(yy%27),yy,10,8)}
+      ctx.fillStyle='#211b20';ctx.fillRect(0,horizon+.05*h,w,h-horizon-.05*h);ctx.strokeStyle='#6f4036';ctx.lineWidth=3;for(let i=0;i<11;i++){const x=((i*97-scroll*.8)%(w+120))-60;ctx.beginPath();ctx.moveTo(x,horizon+.15*h);ctx.lineTo(x-28,h);ctx.stroke();ctx.beginPath();ctx.moveTo(x,horizon+.34*h);ctx.lineTo(x+36,h*.75);ctx.stroke()}
+      ctx.strokeStyle='#f2b347';ctx.lineWidth=2;for(let i=0;i<10;i++){const x=((i*71-scroll*.55)%(w+40))-20;ctx.beginPath();ctx.moveTo(x,h*.12+(i%4)*18);ctx.lineTo(x-20,h*.18+(i%4)*18);ctx.stroke()}
+      ctx.fillStyle='#9f6557';for(let i=0;i<7;i++){const x=((i*137-scroll*.12)%(w+60))-20,y=h*.15+(i%3)*38;ctx.beginPath();ctx.arc(x,y,18+(i%3)*8,0,Math.PI*2);ctx.fill()}
+    }
+    return horizon;
+  }
+  // A consistent left-to-right travel lane sits above each local backdrop.
+  // The regional art can change from dirt to asphalt to cracked concrete, but
+  // the player should always read the same thing first: this is a road and it
+  // continues toward the right edge.  Directional dashes and chevrons also
+  // make the scrolling motion legible when there are few encounters on screen.
+  function drawRoadFlow(w,h,level,scroll,horizon){
+    const top=horizon+h*(level===0?.14:.19),bottom=h*.98;
+    const palette=level===0?{road:'#9b7047',edge:'#e6c07b',lane:'#f1d08b',arrow:'#ffe3a2'}:level===1?{road:'#3f484b',edge:'#c2b58e',lane:'#f3d477',arrow:'#ffe6a0'}:level===2?{road:'#111a25',edge:'#5c8190',lane:'#e0bd62',arrow:'#8fdfff'}:{road:'#241b20',edge:'#9d5a44',lane:'#f2b347',arrow:'#ffd78a'};
+    ctx.save();
+    ctx.fillStyle=palette.road;ctx.beginPath();ctx.moveTo(-12,top+8);ctx.quadraticCurveTo(w*.48,top-5,w+12,top+7);ctx.lineTo(w+12,bottom);ctx.lineTo(-12,bottom);ctx.closePath();ctx.fill();
+    ctx.strokeStyle=palette.edge;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-8,top+8);ctx.quadraticCurveTo(w*.48,top-5,w+8,top+7);ctx.stroke();ctx.globalAlpha=.52;ctx.beginPath();ctx.moveTo(-8,bottom-16);ctx.quadraticCurveTo(w*.5,bottom-8,w+8,bottom-16);ctx.stroke();ctx.globalAlpha=1;
+    // Two long lane guides establish the horizontal travel direction.
+    const laneYs=[h*.67,h*.84];ctx.strokeStyle=palette.lane;ctx.lineWidth=level===0?2:3;ctx.setLineDash([46,34]);for(const y of laneYs){ctx.beginPath();ctx.moveTo(-30,y);ctx.lineTo(w+30,y+Math.sin(scroll*.002)*1.5);ctx.stroke()}ctx.setLineDash([]);
+    // Forward chevrons are deliberately sparse so they remain visible below
+    // the HUD while still communicating that the road exits on the right.
+    const shift=(scroll*.72)%128;ctx.strokeStyle=palette.arrow;ctx.lineWidth=2.5;ctx.globalAlpha=.8;for(let i=-1;i<7;i++){const x=i*128-shift+42;for(const y of [h*.61,h*.78]){ctx.beginPath();ctx.moveTo(x-13,y-8);ctx.lineTo(x,y);ctx.lineTo(x-13,y+8);ctx.stroke()}}ctx.globalAlpha=1;
+    // Small roadside ticks repeat in the same left-to-right rhythm as the
+    // lane marks and keep the road visible during dark city/frontline rounds.
+    ctx.strokeStyle=palette.edge;ctx.lineWidth=2;const markerShift=(scroll*.55)%92;for(let i=-1;i<8;i++){const x=i*92-markerShift;ctx.beginPath();ctx.moveTo(x,top+8);ctx.lineTo(x+10,top+25);ctx.stroke()}
+    ctx.restore();
+  }
+  // Route choices leave a visible, persistent imprint on the road.  These are
+  // low-contrast canvas marks rather than new assets, so they remain readable
+  // on every ecology and survive into later rounds without covering actors.
+  function drawRouteImprint(w,h,level,scroll,horizon){
+    const imprint=game.worldImprint||{},top=horizon+h*(level===0?.14:.19),bottom=h*.98,shift=scroll*.72;
+    ctx.save();
+    if(imprint.M){
+      ctx.strokeStyle='#ff704766';ctx.lineWidth=1.5+imprint.M*.55;ctx.globalAlpha=.3+.07*imprint.M;
+      for(let i=-1;i<7;i++){const x=i*150-(shift*.55%150)+30,y=h*.87+(i%2)*26;ctx.beginPath();ctx.moveTo(x,y-18);ctx.lineTo(x-10,y-4);ctx.lineTo(x+7,y+7);ctx.lineTo(x-5,y+20);ctx.moveTo(x-10,y-4);ctx.lineTo(x-28,y+8);ctx.stroke()}
+    }
+    if(imprint.A){
+      ctx.fillStyle='#52d5ff20';ctx.strokeStyle='#9defff55';ctx.lineWidth=1;ctx.globalAlpha=.28+.05*imprint.A;
+      for(let i=-1;i<9;i++){const x=i*92-(scroll*.48%92),y=h*.9+(i%2)*18;ctx.beginPath();ctx.roundRect(x,y,47,18,5);ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(x+13,y+3);ctx.lineTo(x+22,y+15);ctx.moveTo(x+31,y+3);ctx.lineTo(x+40,y+15);ctx.stroke()}
+    }
+    if(imprint.N){
+      ctx.strokeStyle='#ffd16699';ctx.lineWidth=1.5;ctx.globalAlpha=.32+.06*imprint.N;
+      for(let i=-1;i<8;i++){const x=i*118-(scroll*.82%118),y=h*.73+(i%2)*34;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+10,y-8);ctx.lineTo(x+18,y+3);ctx.lineTo(x+31,y-11);ctx.stroke();ctx.fillStyle='#ffe8a3';ctx.beginPath();ctx.arc(x+31,y-11,2.4,0,Math.PI*2);ctx.fill()}
+    }
+    if(imprint.F){
+      ctx.fillStyle='#b7ef6345';ctx.strokeStyle='#d9ff9677';ctx.lineWidth=1.2;ctx.globalAlpha=.25+.07*imprint.F;
+      for(let i=-1;i<11;i++){const x=i*74-(scroll*.34%74),y=h*.91+(i%3)*14;ctx.beginPath();ctx.ellipse(x,y,14,5,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(x,y+3);ctx.quadraticCurveTo(x-5,y-12,x-1,y-20);ctx.moveTo(x+4,y+3);ctx.quadraticCurveTo(x+8,y-9,x+13,y-16);ctx.stroke();ctx.beginPath();ctx.arc(x-1,y-20,3,0,Math.PI*2);ctx.arc(x+13,y-16,2.5,0,Math.PI*2);ctx.fill()}
+    }
+    if(game.worldPulse>0){const route=routeColor();ctx.globalAlpha=.05+.12*game.worldPulse;ctx.strokeStyle=route;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,top+14);ctx.quadraticCurveTo(w*.44,top-1,w,top+12);ctx.stroke()}
+    ctx.globalAlpha=1;ctx.restore();
+  }
+  function draw(){
+    const w=canvas.clientWidth,h=canvas.clientHeight,route=routeColor();
+    ctx.save();
+    if(game.shake)ctx.translate(rand(-4,4),rand(-4,4));
+    const level=Math.max(0,Math.min(3,(game.round||1)-1)),horizon=drawLandscape(w,h);
+    drawRoadFlow(w,h,level,game.distance||0,horizon);
+    drawRouteImprint(w,h,level,game.distance||0,horizon);
+    // Short streaks behind the player sell motion without changing the run speed.
+    if(game.running){
+      ctx.globalAlpha=.2+.18*game.movePulse;
+      ctx.strokeStyle=route;ctx.lineWidth=2;
+      for(let i=0;i<5;i++){const sx=w*.24-28-i*18-(game.distance*1.8%18);const sy=h*game.y-28+i*13;ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx-24-game.speed*.035,sy);ctx.stroke()}
+      ctx.globalAlpha=1;
+    }
+    for(const o of game.objects){
+      const oy=o.y*h,pulse=1+Math.sin(o.pulse)*.08;
+      drawCreatureShadow(o);
+      ctx.save();ctx.translate(o.x,oy);ctx.rotate(o.rot);ctx.scale(pulse,pulse);
+      if(drawCreatureObject(o)){
+        // The encounter's fauna skin is intentionally drawn before the
+        // legacy SVG / Canvas fallback.  Its `type` still controls all
+        // gameplay consequences, so a visual swap cannot change difficulty.
+      }else if(!drawArtObject(o)&&o.type==='protein'){
+        ctx.shadowColor='#ffd166';ctx.shadowBlur=15;ctx.fillStyle='#ffd166';
+        ctx.beginPath();ctx.moveTo(-o.r,0);ctx.lineTo(0,-o.r*.72);ctx.lineTo(o.r,0);ctx.lineTo(0,o.r*.72);ctx.closePath();ctx.fill();
+        ctx.shadowBlur=0;ctx.strokeStyle='#fff3bd';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-o.r*.55);ctx.lineTo(0,o.r*.55);ctx.moveTo(-o.r*.55,0);ctx.lineTo(o.r*.55,0);ctx.stroke();
+      }else if((!art[o.type]?.complete||!art[o.type]?.naturalWidth)&&o.type==='cost'){
+        ctx.shadowColor='#ff5268';ctx.shadowBlur=14;ctx.fillStyle='#ff5268';
+        ctx.beginPath();ctx.moveTo(0,-o.r);ctx.lineTo(o.r*.7,o.r);ctx.lineTo(-o.r*.7,o.r);ctx.closePath();ctx.fill();
+        ctx.shadowBlur=0;ctx.strokeStyle='#ffd1d8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-o.r*.35,-o.r*.15);ctx.lineTo(o.r*.35,o.r*.55);ctx.moveTo(o.r*.35,-o.r*.15);ctx.lineTo(-o.r*.35,o.r*.55);ctx.stroke();
+      }else if((!art[o.type]?.complete||!art[o.type]?.naturalWidth)&&o.type==='wall'){
+        ctx.fillStyle='#697789';ctx.strokeStyle='#aeb8c6';ctx.lineWidth=2;ctx.fillRect(-o.r,-o.r,o.r*2,o.r*2);ctx.strokeRect(-o.r,-o.r,o.r*2,o.r*2);
+        ctx.strokeStyle='#3d4b5d';ctx.beginPath();ctx.moveTo(-o.r*.65,-o.r*.72);ctx.lineTo(o.r*.45,o.r*.62);ctx.moveTo(o.r*.15,-o.r*.88);ctx.lineTo(-o.r*.45,o.r*.75);ctx.stroke();
+      }else if(!art[o.type]?.complete||!art[o.type]?.naturalWidth){
+        ctx.shadowColor='#52d5ff';ctx.shadowBlur=15;ctx.fillStyle='#52d5ff';ctx.beginPath();ctx.arc(0,0,o.r,0,Math.PI*2);ctx.fill();
+        ctx.shadowBlur=0;ctx.strokeStyle='#d4f8ff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,o.r*.55,0,Math.PI*2);ctx.stroke();
+      }
+      ctx.restore();
+      drawSizeCue(o);
+    }
+    const px=w*.24,py=h*game.y;drawPlayerShadow(px,py,game.visualSize||game.size);drawPlayer(px,py);
+    if(game.boss){
+      drawBossShadow(w,h);
+      ctx.save();ctx.translate(w*.78,h*.48);
+      const s=game.bossActive?1:1.05, pulse=1+Math.sin(game.time*5)*.035, theme=game.bossTheme||'#ff5268';
+      ctx.scale(s*pulse,s*pulse);ctx.shadowColor=theme;ctx.shadowBlur=25;
+      if(game.round%4===2){
+        // Round 2: the county's high-voltage hunter is a grounded, four-legged
+        // beast.  Its harness glows with the theme colour, but the silhouette
+        // reads as a land predator rather than an eel or other sea creature.
+        ctx.strokeStyle=theme;ctx.lineWidth=10;ctx.beginPath();ctx.moveTo(-92,27);ctx.bezierCurveTo(-70,-30,-46,54,-15,25);ctx.stroke();
+        ctx.fillStyle='#4d403b';ctx.strokeStyle='#d7b18a';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(-4,4,65,37,-.08,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#614b40';ctx.beginPath();ctx.ellipse(53,-17,34,29,-.14,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#614b40';ctx.beginPath();ctx.moveTo(34,-37);ctx.lineTo(44,-70);ctx.lineTo(61,-40);ctx.closePath();ctx.moveTo(63,-36);ctx.lineTo(83,-63);ctx.lineTo(87,-25);ctx.closePath();ctx.fill();ctx.stroke();
+        ctx.fillStyle='#8f6350';ctx.beginPath();ctx.ellipse(78,-8,22,13,-.06,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#ffd166';ctx.shadowColor='#ffd166';ctx.shadowBlur=12;ctx.beginPath();ctx.arc(45,-22,7,0,Math.PI*2);ctx.arc(67,-20,7,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+        ctx.fillStyle='#17171a';ctx.beginPath();ctx.arc(48,-22,2.5,0,Math.PI*2);ctx.arc(70,-20,2.5,0,Math.PI*2);ctx.fill();
+        ctx.strokeStyle='#d7b18a';ctx.lineWidth=10;for(const x of [-38,-8,26,54]){ctx.beginPath();ctx.moveTo(x,28);ctx.lineTo(x-8,67);ctx.lineTo(x+8,72);ctx.stroke()}
+        ctx.strokeStyle=theme;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-50,-7);ctx.lineTo(24,-9);ctx.moveTo(-43,8);ctx.lineTo(20,7);ctx.stroke();
+      }else if(game.round%4===3){
+        ctx.fillStyle='#345a3d';ctx.strokeStyle='#d9ff96';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,14,62,52,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#75a64d';ctx.beginPath();ctx.arc(-28,-42,25,0,Math.PI*2);ctx.arc(0,-51,30,0,Math.PI*2);ctx.arc(30,-41,24,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.strokeStyle=theme;ctx.lineWidth=5;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(i*22,38);ctx.quadraticCurveTo(i*34,66,i*18,86);ctx.stroke()}
+        ctx.fillStyle='#f5ffbd';ctx.beginPath();ctx.arc(-23,-14,7,0,Math.PI*2);ctx.arc(23,-14,7,0,Math.PI*2);ctx.fill();
+      }else if(game.round%4===0){
+        // Round 4: a giant humanoid / many-limbed disaster silhouette towers
+        // over the ruined road, with hot seams instead of marine anatomy.
+        ctx.fillStyle='#512c2d';ctx.strokeStyle='#ffd08a';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-37,62);ctx.lineTo(-49,15);ctx.lineTo(-42,-30);ctx.lineTo(-25,-52);ctx.lineTo(25,-52);ctx.lineTo(42,-30);ctx.lineTo(49,15);ctx.lineTo(37,62);ctx.closePath();ctx.fill();ctx.stroke();
+        ctx.fillStyle='#7d3f32';ctx.beginPath();ctx.arc(0,-70,38,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#b75436';ctx.beginPath();ctx.moveTo(-25,-91);ctx.lineTo(-47,-124);ctx.lineTo(-16,-107);ctx.closePath();ctx.moveTo(25,-91);ctx.lineTo(47,-124);ctx.lineTo(16,-107);ctx.closePath();ctx.fill();ctx.stroke();
+        ctx.fillStyle='#fff0b0';ctx.shadowColor='#ffb23e';ctx.shadowBlur=15;ctx.beginPath();ctx.arc(-14,-73,8,0,Math.PI*2);ctx.arc(14,-73,8,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+        ctx.fillStyle='#17171a';ctx.beginPath();ctx.arc(-14,-73,3,0,Math.PI*2);ctx.arc(14,-73,3,0,Math.PI*2);ctx.fill();
+        ctx.strokeStyle='#d26b2f';ctx.lineWidth=15;for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(side*32,-27);ctx.lineTo(side*78,8);ctx.lineTo(side*104,46);ctx.stroke();ctx.beginPath();ctx.moveTo(side*40,3);ctx.lineTo(side*88,42);ctx.lineTo(side*112,78);ctx.stroke()}
+        ctx.strokeStyle='#ffd08a';ctx.lineWidth=3;for(const side of [-1,1])for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(side*(104+i*3),46);ctx.lineTo(side*(120+i*4),54+i*7);ctx.stroke()}
+        ctx.strokeStyle='#ffb23e';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-15,-45);ctx.lineTo(-6,-4);ctx.lineTo(-18,33);ctx.moveTo(15,-45);ctx.lineTo(6,-4);ctx.lineTo(18,33);ctx.stroke();
+      }else{
+        ctx.fillStyle=game.capstone?'#452c52':'#53233a';ctx.strokeStyle='#ff9b8b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,70,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#6e3550';for(let i=0;i<8;i++){const a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(Math.cos(a)*48,Math.sin(a)*48);ctx.lineTo(Math.cos(a)*86,Math.sin(a)*86);ctx.lineTo(Math.cos(a+.18)*54,Math.sin(a+.18)*54);ctx.closePath();ctx.fill()}
+        ctx.fillStyle='#ffcf75';ctx.beginPath();ctx.arc(-24,-8,9,0,Math.PI*2);ctx.arc(24,-8,9,0,Math.PI*2);ctx.fill();
+      }
+      ctx.shadowBlur=0;ctx.fillStyle='#19111b';ctx.fillRect(-25,25,50,9);ctx.restore();
+    }
+    for(let i=game.particles.length-1;i>=0;i--){
+      const p=game.particles[i];p.life-=.016;p.x+=p.vx*.016;p.y+=p.vy*.016;p.vy+=150*.016;p.rot+=p.spin*.016;
+      if(p.life<=0){game.particles.splice(i,1);continue}
+      ctx.save();ctx.globalAlpha=Math.max(0,p.life/p.max);ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.color;
+      if(p.kind==='spark'){ctx.strokeStyle=p.color;ctx.lineWidth=Math.max(1,p.size*.55);ctx.beginPath();ctx.moveTo(-p.size*1.8,0);ctx.lineTo(p.size*1.8,0);ctx.moveTo(0,-p.size*1.8);ctx.lineTo(0,p.size*1.8);ctx.stroke()}else ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+      ctx.restore();
+    }
+    if(game.hitFlash>0){ctx.fillStyle='#ffedf055';ctx.globalAlpha=Math.min(.45,game.hitFlash);ctx.fillRect(0,0,w,h);ctx.globalAlpha=1}
+    ctx.restore();requestAnimationFrame(draw)
+  }
+  function drawPlayer(x,y){
+    // Keep the on-screen body within a stable mobile-game frame.  Collision
+    // math still uses game.size; visualSize is a capped presentation scale so
+    // later mutations remain readable instead of pushing the body off-screen.
+    const s=game.visualSize||game.size,t=game.traits,route=routeColor(),bob=Math.sin(game.time*9)*(game.running?1.4:0);
+    ctx.save();ctx.translate(x,y+bob);ctx.rotate(game.playerLean+Math.sin(game.time*7)*.015);ctx.scale(s,s);
+    if(game.movePulse>0){ctx.globalAlpha=.18+game.movePulse*.15;ctx.strokeStyle=route;ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,7,38+game.movePulse*10,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1}
+    // Once the local SVG layers are ready, draw the player as a modular stack.
+    // The route flags decide which biological modules are visible; all gameplay
+    // values and collision geometry continue to come from `game` as before.
+    if(playerArtReady()){
+      const drawLayer=layer=>{const image=playerArt[layer];ctx.drawImage(image,-64,-72,128,144)};
+      drawLayer('base');
+      if(game.stage===0&&activeTraits().length===0)drawLayer('wheelchair');
+      if(t.M)drawLayer('arms');
+      if(t.A)drawLayer('shell');
+      if(t.N)drawLayer('neural');
+      if(t.F)drawLayer('fungal');
+      if(game.capstone)drawLayer('capstone');
+      ctx.restore();
+      return;
+    }
+    // A dark under-stroke gives every mutation the same readable silhouette.
+    ctx.shadowColor=route;ctx.shadowBlur=14+game.movePulse*12;ctx.fillStyle='#f08b5d';
+    ctx.beginPath();ctx.ellipse(0,12,28,34,0,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+    ctx.strokeStyle='#632d2a';ctx.lineWidth=3;ctx.stroke();
+    ctx.fillStyle='#e9b08b';ctx.beginPath();ctx.arc(-8,-28,15,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#632d2a';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#111722';ctx.fillRect(-13,-30,5,4);ctx.fillRect(-2,-30,5,4);
+    ctx.fillStyle='#c65b3e';ctx.fillRect(-20,40,18,8);ctx.fillRect(4,40,18,8);
+    if(t.M){
+      ctx.fillStyle='#f08b5d';ctx.strokeStyle='#632d2a';ctx.lineWidth=3;
+      ctx.beginPath();ctx.ellipse(-34,12,10+6*t.M,23+5*t.M,-.3,0,Math.PI*2);ctx.ellipse(34,12,10+6*t.M,23+5*t.M,.3,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.strokeStyle='#8b3d32';ctx.lineWidth=2;for(let side of [-1,1])for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(side*(29+i*2),-1+i*8);ctx.lineTo(side*(39+i*2),8+i*8);ctx.stroke()}
+      if(t.M>1){ctx.fillStyle='#f4b183';ctx.fillRect(-40,31,12,7);ctx.fillRect(28,31,12,7)}
+    }
+    if(t.A){
+      ctx.fillStyle='#1e6f7b';ctx.strokeStyle='#8af2ff';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,10,31+5*t.A,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.strokeStyle='#b5f8ff';ctx.lineWidth=2;for(let i=-1;i<=1;i++){ctx.beginPath();ctx.arc(i*14,10,13,Math.PI*.2,Math.PI*1.05);ctx.stroke()}
+      ctx.fillStyle='#52d5ff';ctx.beginPath();ctx.moveTo(-27,28);ctx.lineTo(-46,45);ctx.lineTo(-30,41);ctx.closePath();ctx.moveTo(27,28);ctx.lineTo(46,45);ctx.lineTo(30,41);ctx.closePath();ctx.fill();
+    }
+    if(t.N){
+      ctx.strokeStyle='#ffd166';ctx.lineWidth=2;for(let i=0;i<3;i++){const wob=Math.sin(game.time*8+i)*3;ctx.beginPath();ctx.moveTo(-24+i*10,-44);ctx.lineTo(-18+i*12+wob,-54);ctx.lineTo(-10+i*11,-48);ctx.stroke()}
+      ctx.shadowColor='#ffd166';ctx.shadowBlur=9;ctx.fillStyle='#ffd166';ctx.fillRect(-13,-30,5,4);ctx.fillRect(-2,-30,5,4);ctx.shadowBlur=0;
+    }
+    if(t.F){
+      ctx.strokeStyle='#b7ef63';ctx.lineWidth=3;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(-18+i*18,32);ctx.quadraticCurveTo(-35+i*25,45,-25+i*28,58);ctx.stroke()}
+      ctx.fillStyle='#789b3e';ctx.strokeStyle='#d9ff96';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(21,-45,15,8,-.25,0,Math.PI*2);ctx.ellipse(34,-51,9,5,.2,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#e7ffad';ctx.beginPath();ctx.arc(20,-46,2,0,Math.PI*2);ctx.arc(29,-49,2,0,Math.PI*2);ctx.fill();
+    }
+    if(game.capstone){
+      ctx.strokeStyle=route+'aa';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,4,48+Math.sin(game.time*4)*3,0,Math.PI*2);ctx.stroke();
+    }
+    if(game.stage===0&&activeTraits().length===0){ctx.strokeStyle='#aab6c5';ctx.lineWidth=4;ctx.beginPath();ctx.arc(-26,47,15,0,Math.PI*2);ctx.arc(20,47,15,0,Math.PI*2);ctx.stroke();ctx.strokeStyle='#617080';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-26,47);ctx.lineTo(-5,38);ctx.lineTo(20,47);ctx.stroke()}
+    ctx.restore()
+  }
+  function loop(t){if(!game.running)return;const dt=Math.min(.04,(t-game.last)/1000);game.last=t;update(dt);requestAnimationFrame(loop)}
+  $('#startBtn').onclick=()=>startRun('fresh');$('#againBtn').onclick=()=>{const next=$('#resultKicker').textContent.includes('终点突破');$('#resultOverlay').classList.remove('active');startRun(next?'next':'fresh')};$('#homeBtn').onclick=()=>{$('#resultOverlay').classList.remove('active');setScreen('start');renderMeta()};$('#bossStartBtn').onclick=beginBoss;$('#burstBtn').onclick=()=>{if(game.bossActive){hitBoss()}else if(game.energy>=100){game.energy=0;game.score+=80;showToast('爆发！把路撞开了');game.movePulse=1;addParticle(canvas.clientWidth*.24,canvas.clientHeight*game.y,'#ffb23e',18)}};
+  function press(el,action){el.addEventListener('pointerdown',e=>{el.classList.add('pressed');action(e)});['pointerup','pointercancel','pointerleave'].forEach(type=>el.addEventListener(type,()=>el.classList.remove('pressed')))}
+  press($('#upBtn'),()=>move(-1));press($('#downBtn'),()=>move(1));press($('#burstBtn'),()=>{});addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='w')move(-1);if(e.key==='ArrowDown'||e.key==='s')move(1);if(e.key===' '){e.preventDefault();$('#burstBtn').click()}});let sy=0;canvas.addEventListener('touchstart',e=>{sy=e.touches[0].clientY},{passive:true});canvas.addEventListener('touchend',e=>{const dy=e.changedTouches[0].clientY-sy;if(Math.abs(dy)>20)move(dy>0?1:-1)},{passive:true});document.querySelectorAll('.upgrade').forEach(btn=>btn.onclick=()=>{const k=btn.dataset.upgrade,cost=(meta[k]+1)*4;if(meta.points<cost){showToast('点数不够，还差 '+(cost-meta.points));return}meta.points-=cost;meta[k]++;persist();showToast('升级成功：'+btn.querySelector('strong').textContent)});$('#resetBtn').onclick=()=>{if(confirm('确定清空所有局外成长吗？')){meta={...defaultMeta};persist();showToast('局外成长已清空')}};draw();
+})();
+</script>
+</body>
+</html>
